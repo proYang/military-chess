@@ -11,9 +11,18 @@ window.onload = function() {
         transform: 'translate(-50%, -50%) scale(0.5)',
     });
     drawtable(canvas, width, height);
+
+    window.addEventListener('resize', function(event) {
+        let canvas = document.getElementById('chess-table');
+        let {width, height} = document.getElementById('table').getBoundingClientRect();
+        canvas.width = 2 * width;
+        canvas.height = 2 * height;
+        drawtable(canvas, width, height);
+    })
 }
 
 function drawtable(canvas, width, height) {
+    canvas.getContext('2d').clearRect(0, 0, 2*width, 2*height);
     let xStep = width/20;
     let leftTop = new Point2D(2*xStep, 2*xStep),
     rightTop = new Point2D(18*xStep, 2*xStep),
