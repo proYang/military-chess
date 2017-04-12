@@ -1,0 +1,10 @@
+[object]
+    [export]
+    new chess();
+        [exports]
+        chess.role = ['军旗','工兵','排长','连长','营长','团长','旅长','师长 ','军长','司令','地雷','炸弹'];//炸弹同归于尽，地雷小于工兵,军旗被扛者输。
+        chess.getAccessablePointArr(x, y);     return arr[n][2] ([[1,2],[2,5]...])
+        chess.isAccessable(x, y);         return boolean;
+        chess.getBigger(chessId1,chessId2);     return chessId;
+        chess.isWinner();      return the_winner_id;
+
