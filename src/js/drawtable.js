@@ -1,3 +1,5 @@
+import {chessPosition} from './global';
+
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -60,7 +62,22 @@ function drawtable(canvas, width, height) {
     for (let i = 0; i < lineArray.length; i++) {
         drawLine(canvas, '#000', lineArray[i][0]*xStep, lineArray[i][1]*xStep, lineArray[i][2]*xStep, lineArray[i][3]*xStep);
     }
-    drawStation(canvas, '#424D37', '#538ED5', 2*xStep, 2*xStep, 2*xStep, xStep, 0);
+    // drawStation(canvas, '#424D37', '#538ED5', 2*xStep, 2*xStep, 2*xStep, xStep, 0, '兵站');
+    // drawCamp(canvas, '#424D37', '#538ED5', 10*xStep, 8*xStep, 1.2*xStep, 0, '行营');
+    let stations = [0, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 19, 20, 22, 24, 
+    25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 39, 40, 41, 43, 44, 45, 47, 49,
+    50, 51, 52, 53, 54, 55, 57, 59];
+    let station;
+    for (let i = 0; i < stations.length; i++) {
+        station = chessPosition[stations[i]];
+        drawStation(canvas, '#424D37', '#538ED5', station[0]*xStep, station[1]*xStep, 2*xStep, xStep, 0, '兵站');
+    }
+    let camps = [11, 13, 17, 21, 23, 36, 38, 42, 46, 48];
+    let camp;
+    for (let i = 0; i < camps.length; i++) {
+        camp = chessPosition[camps[i]];
+        drawCamp(canvas, '#424D37', '#538ED5', camp[0]*xStep, camp[1]*xStep, 1*xStep, 0, '行营');
+    }
 }
 
 function drawLine(canvas, color, x1, y1, x2, y2){
@@ -75,8 +92,8 @@ function drawLine(canvas, color, x1, y1, x2, y2){
     ctx.closePath();
 }
 
-function drawStation(canvas, bdColor, bgColor, x, y, width, height, direction) {
-    let ctx = canvas.getContext('2d')
+function drawStation(canvas, bdColor, bgColor, x, y, width, height, direction, text) {
+    let ctx = canvas.getContext('2d');
     ctx.strokeStyle = bdColor;
     ctx.fillStyle = bgColor;
     [x, y] = getCanvasPoint(canvas, x, y);
@@ -90,9 +107,15 @@ function drawStation(canvas, bdColor, bgColor, x, y, width, height, direction) {
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
+    ctx = canvas.getContext('2d');
+    ctx.strokeStyle = bdColor;
+    ctx.fillStyle = '#000';
+    let fontSize = canvas.width/23;
+    ctx.font = Math.floor(fontSize) + 'px serif';
+    ctx.fillText(text, x-fontSize, y+9);
 }
 
-function drawCamp(canvas, bdColor, bgColor, x, y, r, direction) {
+function drawCamp(canvas, bdColor, bgColor, x, y, r, direction, text) {
     let ctx = canvas.getContext('2d');
     [x, y] = getCanvasPoint(canvas, x, y);
     r = 2*r;
@@ -103,6 +126,10 @@ function drawCamp(canvas, bdColor, bgColor, x, y, r, direction) {
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
+    ctx.fillStyle = '#000';
+    let fontSize = canvas.width/23;
+    ctx.font = Math.floor(fontSize) + 'px serif';
+    ctx.fillText(text, x-fontSize, y+9);
 }
 
 function getCanvasPoint (canvas, x, y) {
