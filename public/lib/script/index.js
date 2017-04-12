@@ -1,3 +1,4 @@
 import '../style/commes.css';
-let a = 5;
+import '../style/style.scss';
+let a = 8;
 console.log(a);
