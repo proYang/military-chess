@@ -16,8 +16,8 @@ window.onload = function() {
 
 function drawtable(ctx, width, height) {
     let xStep = width/20;
-    // console.log(xStep);
-
+    console.log(xStep);
+    drawLine(ctx, '#000', 2*xStep, xStep, 18*xStep, xStep);
 }
 
 function drawLine(ctx, color, x1, y1, x2, y2){
