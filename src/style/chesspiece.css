@@ -1,18 +1,15 @@
-div{
-    margin: 20px;
-}
+/*棋子共同样式*/
 .chesspiece{
-    /*position: absolute;*/
+    position: absolute;
     width: 10%;
     height: 3.33%;
     box-sizing: border-box;
-    /*border:2px solid #000000;*/
-    /*box-shadow: 1px 1px 5px #888888;*/
     border-radius: 3px;
     color: #fff;
     text-align: center;
     font-family: "helvetica neue", helvetica, arial, sans-serif;
 }
+/*蓝棋样式*/
 .chesspiece-blue{
     background-color: #4162a8;
     border-top: 1px solid #38538c;
@@ -22,6 +19,12 @@ div{
     -webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
     box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
 }
+.chesspiece-blue:hover {
+     -webkit-box-shadow: inset 0 0 20px 1px #87adff, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
+     box-shadow: inset 0 0 20px 1px #87adff, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
+     cursor: pointer;
+ }
+/*红棋样式*/
 .chesspiece-red{
     background-color: #b2000c;
     border-top: 1px solid #63000C;
@@ -32,11 +35,7 @@ div{
     -moz-box-shadow: inset 1px 10px 1px #C30813, 0 1px 0 #57000C, 0 6px 0 #60000C, 0 8px 4px 1px #111111;
     box-shadow: inset 1px 10px 1px #C30813, 0 1px 0 #57000C, 0 6px 0 #60000C, 0 8px 4px 1px #111111;
 }
-.chesspiece-blue:hover {
-    -webkit-box-shadow: inset 0 0 20px 1px #87adff, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
-    box-shadow: inset 0 0 20px 1px #87adff, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
-    cursor: pointer;
-}
+
 .chesspiece-red:hover{
     -webkit-box-shadow: inset 0 0 20px 1px #ff0813;
     -moz-box-shadow: inset 0 0 20px 1px #ff0813;
