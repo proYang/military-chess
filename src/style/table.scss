@@ -6,6 +6,11 @@ $btnNegoBackgroundColor: #ECECEB;
 #wrap {
     padding-top: 55%;
     width: 61%;
+    box-sizing: border-box;
+    min-width: 600px;
+    max-width: 767px;
+    min-height: 540px;
+    max-height: 691px;
     background-color: $backgroudColor;
     position: relative;
     margin: 0 auto;

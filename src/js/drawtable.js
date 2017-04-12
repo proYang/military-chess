@@ -15,7 +15,6 @@ window.onload = function() {
 
 function drawtable(canvas, width, height) {
     let xStep = width/20;
-    console.log(xStep);
     let leftTop = new Point2D(2*xStep, 2*xStep),
     rightTop = new Point2D(18*xStep, 2*xStep),
     leftBottom = new Point2D(2*xStep, 28*xStep),
@@ -61,7 +60,6 @@ function drawLine(canvas, color, x1, y1, x2, y2){
     ctx.beginPath();
     [x1, y1] = getCanvasPoint(canvas, x1, y1);
     [x2, y2] = getCanvasPoint(canvas, x2, y2);
-    console.log(x1, y1, x2, y2);
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
