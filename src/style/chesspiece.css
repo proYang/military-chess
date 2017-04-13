@@ -43,3 +43,10 @@
     cursor: pointer;
 }
 
+
+/*拖拽选择*/
+.chesspiece-check{
+    width: 15%;
+    height: 3.33%;
+}
+
