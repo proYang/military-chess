@@ -1,6 +1,11 @@
 #wrap {
   padding-top: 55%;
-  width: 63%;
+  width: 61%;
+  box-sizing: border-box;
+  min-width: 643px;
+  max-width: 767px;
+  min-height: 580px;
+  max-height: 691px;
   background-color: #1875e7;
   position: relative;
   margin: 0 auto; }
@@ -20,7 +25,7 @@
   left: 0;
   background-color: #FFE14E; }
 
-#chess-table {
+#table {
   width: 60%;
   height: 100%;
   position: absolute;
