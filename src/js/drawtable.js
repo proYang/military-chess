@@ -14,6 +14,8 @@ window.onload = function() {
     });
     drawtable(canvas, width, height);
 
+    // console.log(window);
+
     window.addEventListener('resize', function(event) {
         let canvas = document.getElementById('chess-table');
         let {width, height} = document.getElementById('table').getBoundingClientRect();
