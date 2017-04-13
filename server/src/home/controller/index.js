@@ -39,7 +39,7 @@ export default class extends Base {
   openAction(self) {
     let socket = self.http.socket;
     // 初次连接，返回房间状态
-    // this.emit('roomstatus', getRoomStatus());
+    this.emit('roomstatus', rooms);
   }
 
   closeAction(self) {
