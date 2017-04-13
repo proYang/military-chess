@@ -83,6 +83,19 @@ function drawtable(canvas, width, height) {
         stronghold = chessPosition[strongholds[i]];
         drawStation(canvas, '#424D37', '#538ED5', stronghold[0]*xStep, stronghold[1]*xStep, 3*xStep, 1.5*xStep, 0, '大本营', 6);
     }
+    drawMountain(canvas, chessPosition[25][0]*xStep, chessPosition[25][1]*xStep, chessPosition[32][0]*xStep, chessPosition[32][1]*xStep, '山界', '#000', 100);
+    drawMountain(canvas, chessPosition[27][0]*xStep, chessPosition[27][1]*xStep, chessPosition[34][0]*xStep, chessPosition[34][1]*xStep, '山界', '#000', 100);
+}
+
+function drawMountain(canvas, x1, y1, x2, y2, text, color, fontSize) {
+    [x1, y1] = getCanvasPoint(canvas, x1, y1);
+    [x2, y2] = getCanvasPoint(canvas, x2, y2);
+    let x = (x1 + x2)/2;
+    let y = (y1 + y2)/2;
+    let ctx = canvas.getContext('2d');
+    ctx.filleStyle = color;
+    ctx.font = fontSize + 'px serif';
+    ctx.fillText(text, x-fontSize * (text.length/2), y+fontSize/4);
 }
 
 function drawLine(canvas, color, x1, y1, x2, y2, lineWidth){
