@@ -47,22 +47,21 @@ export default class extends Base {
     let roomId = socket.roomId;
     // remove the userName from global userNames list
     if (socket.userName) {
-      let users = rooms[roomId].users;
+      // let users = rooms[roomId].users;
       let index = undefined;
-      users.forEach(function (item, i) {
-        if (item.userId == socket.userId) {
+      rooms[roomId].users.forEach(function (item ,i) {
+        if (item.userId == socket.socketId) {
           index = i
         }
       });
-      if (index) {
-        users.splice(index, 1)
-        console.log(users)
+      if (index !== undefined) {
+        rooms[roomId].users.splice(index, 1)
         --numUsers;
+        console.log('\nsomeone leaveRoom');
+        console.log('{' + socket.userName, socket.roomId + '}');
       }
 
       // 广播房间状态
-      console.log('\nsomeone leaveRoom');
-      console.log('{' + socket.userName, socket.roomId + '}');
       console.log(rooms);
       this.broadcast('roomstatus', rooms, true);
     }
