@@ -1,5 +1,6 @@
 let talkContent = document.getElementById('talkContent'),
 	sendInput = document.getElementById('sendInput'),
+	saveBtn = document.getElementById('saveBtn'),
 	socket = io('http://chess.slane.cn/');
 const JOINROOM = 'joinroom',      // 加入房间的事件
 	CHAT = 'chat';              // 聊天的事件
@@ -50,11 +51,12 @@ function updateList(res) {
 	createContentNode(msg);
 }
 function listen() {
+	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
 	let data = getNickAndID();  // 得到这个房间的用户和ID
 	socket.emit(JOINROOM, data)
 	socket.on(CHAT, updateList);
 }
+
 module.exports = {
-	btnHanfler,
 	listen
 }
