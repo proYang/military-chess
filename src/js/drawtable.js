@@ -79,7 +79,7 @@ function drawtable(canvas, width, height) {
     lineArray.push([2, 26, 18, 18]);
     lineArray.push([10, 26, 18, 22]);    
     for (let i = 0; i < lineArray.length; i++) {
-        drawLine(canvas, '#000', lineArray[i][0]*xStep, lineArray[i][1]*xStep, lineArray[i][2]*xStep, lineArray[i][3]*xStep, 1);
+        drawLine(canvas, '#000', lineArray[i][0]*xStep, lineArray[i][1]*xStep, lineArray[i][2]*xStep, lineArray[i][3]*xStep, 2);
     }
     drawSubway(canvas, '#000', xStep, 8);
     let stations = [0, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 19, 20, 22, 24, 
