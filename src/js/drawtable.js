@@ -14,6 +14,8 @@ window.onload = function() {
     });
     drawtable(canvas, width, height);
 
+    // console.log(window);
+
     window.addEventListener('resize', function(event) {
         let canvas = document.getElementById('chess-table');
         let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -21,6 +23,23 @@ window.onload = function() {
         canvas.height = 2 * height;
         drawtable(canvas, width, height);
     })
+    startTiming();
+}
+
+function startTiming() {
+    let timeDom = document.getElementById('time');
+    let startTime = new Date();
+    function startCall() {
+        setTimeout(function() {
+            let leftTime = parseInt(((new Date()).getTime() - startTime.getTime())/1000);
+            let h = parseInt((leftTime/(60*60))%24);
+            let m = parseInt((leftTime/60)%60);
+            let s = leftTime%60;
+            timeDom.innerText = h+':'+m+':'+s;
+            startCall()
+        }, 1000);
+    }
+    startCall();
 }
 
 function drawtable(canvas, width, height) {
