@@ -1,4 +1,6 @@
-import '../style/commes.css';
-import '../style/style.scss';
-let a = 8;
-console.log(a);
+import '../style/normalize.css';
+import '../style/talk.scss';
+import talkObj from './talk.js';
+let saveBtn = document.getElementById('saveBtn');
+
+saveBtn.addEventListener('click',talkObj.btnHanfler,false);
