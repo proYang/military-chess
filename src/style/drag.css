@@ -4,3 +4,10 @@
     height: 3.33%;
     visibility: hidden;
 }
+
+.dragSection {
+    background: #000;
+    width: 16%;
+    height: 20%;
+    align-content: center;
+}
