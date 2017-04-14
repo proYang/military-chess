@@ -130,13 +130,12 @@ export function drawtable(canvas, width, height) {
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
     let placeholders = document.getElementsByClassName('hover');
     // table = document.getElementById('table');
-    for (let i = 0; i < placeholders.length; i++) {
-        placeholders[i].remove();
-    }
+    // for (let i = 0; i < placeholders.length; i++) {
+    //     placeholders[i].remove();
+    // }
     if (placeholders.length) {
         for (let i = 0; i < placeholders.length; i++) {
             placeholders[i].setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
-            
         }
     } else {
         let documentFragment = new DocumentFragment(), placeholder;
