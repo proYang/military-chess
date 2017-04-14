@@ -123,6 +123,7 @@ $btnNegoBackgroundColor: #B8C7C9;
 }
 .chesses {
     display: flex;
+    flex-wrap: wrap;
     width: 92%;
     height: 10%;
     background-color: $btnNegoBackgroundColor;
