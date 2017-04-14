@@ -51,15 +51,16 @@ function updateList(res) {
 	createContentNode(msg);
 }
 function sendDateByEnter(ev) {
-	if(ev.keyCode === 13) {
 		console.log(111);
+	if(ev.keyCode === 13) {
 		btnHanfler();
 		return ;
 	}
 	realSendContent.innerHTML = '';
 }
 function toggleDefaultContent() {
-	let ifShow = defalutSelectContent.style.display === 'block';
+	let  ifShow = defalutSelectContent.style.display === 'block';
+	console.log(ifShow);
 	defalutSelectContent.style.display = ifShow ? 'none' : 'block';
 	showDefaultContent.className = !ifShow ? 'hide-default_content':'show-default_content' ;
 }
@@ -78,22 +79,22 @@ function selectEmoji (ev) {
 	realSendContent.innerHTML+=`<img src="${emojiSrc}">`;
 }
 function focusInputContent() {
-	console.log(666);
 	defalutSelectContent.style.display = 'none';
 	showDefaultContent.className = 'hide-default_content';
 }
-function listen() {
+function listen(ev) {
+	console.log(666);
 	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
 	faceEmoji.addEventListener('click',selectEmoji,false);// 监听点击表情的事件
 	defalutSelectContent.addEventListener('click',defaultContent,false);// 默认选中文字的事件
 	showDefaultContent.addEventListener('click',toggleDefaultContent,false);
 	let data = getNickAndID();  // 得到这个房间的用户和ID
 	socket.emit(JOINROOM, data); // 向房间里的其他人物发送信息
-	socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
+	//socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
 	realSendContent.addEventListener('keydown',sendDateByEnter,false);
 	realSendContent.addEventListener('focus',focusInputContent,false);
-}
 
+}
 module.exports = {
 	listen
 };
