@@ -5,7 +5,8 @@
 import Chess from './chess';
 import Player from './player';
 let chessInPosition = [],
-    chessArr        = []
+    chessArr        = [],
+    superPoint      = []                    //在铁路上的点
 ;
 const maxRole = 12,
       maxChessNum = 50,
@@ -18,14 +19,18 @@ export default class ChessBoard {
         this.player1 = new Player('red');
         this.player2 = new Player('black');
         chessInPosition = [];
-        for(let x=-1;x<boardRow;x++){ chessInPosition[x]=[]; }              ///创建二维数组
+        this.initSuperPoint();
+        for(let x=0;x<boardRow;x++){ chessInPosition[x]=[]; }              ///创建二维数组
         if(isRandom){
             this.getChessInPositionRandom();
+            this.player1.initChessNum();
+            this.player2.initChessNum();
         }else{
             chessInPosition = [];
         }
     }
 
+    /*摆棋*/
     setOriflammePositionRan(player){                   //军旗随机位置
         while(player.getLeftChessNum(0)){
             let oriflamme = new Chess(),
@@ -41,7 +46,7 @@ export default class ChessBoard {
                     })();
             }
             oriflamme.setPos(x, y);
-            oriflamme.setRole(0);
+            oriflamme.setRoleId(0);
             oriflamme.setOwner(player);
             chessInPosition[x][y] = oriflamme;
             player.subAChess(0);
@@ -66,7 +71,7 @@ export default class ChessBoard {
                 })();
             }
             landMin.setPos(x, y);
-            landMin.setRole(10);
+            landMin.setRoleId(10);
             landMin.setOwner(player);
             chessInPosition[x][y] = landMin;
             player.subAChess(10);
@@ -90,7 +95,7 @@ export default class ChessBoard {
                         i = (i+1) % maxRole;
                     }
                     chess.setPos(x,y);
-                    chess.setRole(i);
+                    chess.setRoleId(i);
                     chess.setOwner(player);
                     chessInPosition[x][y] = chess;
                     player.subAChess(i);
@@ -98,8 +103,97 @@ export default class ChessBoard {
            }
         }
     }
-
+    getBoardRow(){
+        return boardRow;
+    }
+    getBoardCol(){
+        return boardRow;
+    }
     getChessInPosition(){
         return chessInPosition;
+    }
+
+    initSuperPoint(){                                           // 初始化铁路点
+        for(let x=0;x<boardRow;x++){
+            for(let y=0;y<boardCol;y++){
+                superPoint[x][y] = (x >= 1 && x <= 10 && (y === 0 || y === 4)) || (x === 1 || x === 5 || x === 6 || x === 10);
+            }
+        }
+    }
+    isSuperPoint(x, y){
+        return !!superPoint[x][y];
+    }
+
+    /*行棋*/
+    isAccessable(locX, locY, disX, disY){
+        if(locX === disX && locY ===disY)
+            return true;
+        if(!this.isSuperPoint(locX, locY)){
+            if(locX+1<boardRow && (locX+1===disX && locY===disY)){
+                return true;
+            }
+            if(locX-1>0 && (locX-1===disX && locY===disY)){
+                return true;
+            }
+            if(locY+1<boardCol && ((locX===disX && locY+1===disY))){
+                return true;
+            }
+            if(locY-1>0 && ((locX===disX && locY-1===disY))){
+                return true;
+            }
+            return false;
+        }
+
+        if(locX+1<boardRow && this.isSuperPoint(locX, locY)){
+            if(!(chessInPosition[locX+1][locY] instanceof Chess))
+                isAccessable(locX+1, locY, disX, disY);
+            else if(locX+1<boardRow && (locX+1===disX && locY===disY)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        if(locX-1>0 && this.isSuperPoint(locX, locY)){
+            if(!(chessInPosition[locX-1][locY] instanceof Chess))
+                isAccessable(locX-1, locY, disX, disY);
+            else if(locX-1>0 && (locX-1===disX && locY===disY)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        if(locY+1<boardRow && this.isSuperPoint(locX, locY)){
+            if(!(chessInPosition[locX][locY+1] instanceof Chess))
+                isAccessable(locX, locY+1, disX, disY);
+            else if(locY+1<boardCol && (locX===disX && locY+1===disY)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        if(locY-1>0 && this.isSuperPoint(locX, locY)){
+            if(!(chessInPosition[locX][locY-1] instanceof Chess))
+                isAccessable(locX, locY-1, disX, disY);
+            else if(locY-1>0 && (locX===disX && locY-1===disY)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    getAccessablePointArr(locX, locY){
+        let accessablePointArr = [],
+            boardRow = this.getBoardRow(),
+            boardCol = this.getBoardCol(),
+            chessInPosition = this.getChessInPosition(),
+            cnt=0
+        ;
+        for(let i=0;i<100;i++) {accessablePointArr[i] = [];}
+        for(let x=0;x<boardRow;x++){
+            for(let y=0;y<boardCol;y++){
+                if(dfsAccessablePoint(locX, locY, x, y))
+                    accessablePointArr[cnt++] = [x, y];
+            }
+        }
     }
 }
