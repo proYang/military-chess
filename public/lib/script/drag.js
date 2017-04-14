@@ -22,7 +22,7 @@ export function setDrop(){
           return true;
       };
       hover.ondrop = function (ev) {
-          console.log(dragEl);
+        //   console.log(dragEl);
           let chessItem = document.createElement('div');
           chessItem.className = 'chesspiece' + ' ' + 'chesspiece-blue' + ' ' + 'chesspiece-table';
           chessItem.setAttribute('draggable','true');
