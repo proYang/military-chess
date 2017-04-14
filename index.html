@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="./src/style/normalize.css">
     <link rel="stylesheet" type="text/css" href="./src/style/table.css">
+    <link rel="stylesheet" href="./src/style/chesspiece.css">
+    <link rel="stylesheet" href="./src/style/drag.css">
 </head>
 <body>
     <div id="wrap">
@@ -18,10 +20,33 @@
                         <div class="time-step" id="time">0:0:0</div>
                         <div class="time-step">步数 0</div>
                     </div>
-                    <div><div class="btn">求 和</div></div>
-                    <div><div class="btn">投 降</div></div>
+                    <div><div class="btn btn-nego" id="negotiation">求 和</div></div>
+                    <div><div class="btn btn-nego" id="surrender">投 降</div></div>
                 </div>
-                <div class="chesses"></div>
+                <div class="chesses">
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军旗</div>
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军旗</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                </div>
                 <div class="chesses"></div>
                 <div id="dialog">
                     <div class="talk">
@@ -40,10 +65,24 @@
             </aside>
             <div id="table">
                 <canvas id="chess-table"></canvas>
+            </div>
+
             </div> 
+
         </div>
     </div>
-     <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 
+    <div id="mask" class="hidden">
+        <div id="mask-table">
+            <div id="mask-content">
+                <p></p>
+            </div>
+            <div id="btn-warpper">
+                <button class="btn mask-btn" id="mask-btn-1">确定</button>
+                <button class="btn mask-btn" id="mask-btn-2">取消</button>
+            </div>
+        </div>
+    </div>
+    <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 
     <script src="./public/dist/index.js"></script>
 </body>
 </html>

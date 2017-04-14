@@ -1,5 +1,6 @@
 import {chessPosition} from './global';
-
+import {setDrop} from '../../public/lib/script/drag';
+// console.log(setDrop);
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -22,7 +23,26 @@ window.onload = function() {
         canvas.width = 2 * width;
         canvas.height = 2 * height;
         drawtable(canvas, width, height);
-    })
+    });
+
+    document.getElementById('negotiation').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+    document.getElementById('surrender').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+
+    document.getElementById('mask-btn-2').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        console.log(mask.className.indexOf('hidden'));
+        if (mask.className.indexOf('hidden') === -1) {
+            mask.className += 'hidden';
+        } else {
+            mask.className = mask.className.replace('hidden', '');
+        }
+    });
     startTiming();
 }
 
@@ -42,8 +62,9 @@ function startTiming() {
     startCall();
 }
 
-function drawtable(canvas, width, height) {
-    canvas.getContext('2d').clearRect(0, 0, 2*width, 2*height);
+export function drawtable(canvas, width, height) {
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 2*width, 2*height);
     let xStep = width/20;
     let leftTop = new Point2D(2*xStep, 2*xStep),
     rightTop = new Point2D(18*xStep, 2*xStep),
@@ -79,74 +100,106 @@ function drawtable(canvas, width, height) {
     lineArray.push([2, 26, 18, 18]);
     lineArray.push([10, 26, 18, 22]);    
     for (let i = 0; i < lineArray.length; i++) {
-        drawLine(canvas, '#000', lineArray[i][0]*xStep, lineArray[i][1]*xStep, lineArray[i][2]*xStep, lineArray[i][3]*xStep, 2);
+        drawLine(ctx, '#000', lineArray[i][0]*xStep, lineArray[i][1]*xStep, lineArray[i][2]*xStep, lineArray[i][3]*xStep, 2);
     }
-    drawSubway(canvas, '#000', xStep, 8);
+    drawSubway(ctx, '#000', xStep, 8);
     let stations = [0, 2, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 19, 20, 22, 24, 
     25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 39, 40, 41, 43, 44, 45, 47, 49,
     50, 51, 52, 53, 54, 55, 57, 59];
     let station;
     for (let i = 0; i < stations.length; i++) {
-        station = chessPosition[stations[i]];
-        drawStation(canvas, '#424D37', '#538ED5', station[0]*xStep, station[1]*xStep, 2*xStep, xStep, 0, '兵站', 6);
+        drawStationWrapper(ctx, '#424D37', '#538ED5', 6 , stations[i], '兵站', xStep, chessPosition);
+        // (ctx, bdColor, bgColor, lineWidth, index, text, xStep, chessPosition)
     }
     let camps = [11, 13, 17, 21, 23, 36, 38, 42, 46, 48];
     let camp;
     for (let i = 0; i < camps.length; i++) {
-        camp = chessPosition[camps[i]];
-        drawCamp(canvas, '#424D37', '#538ED5', camp[0]*xStep, camp[1]*xStep, 1*xStep, 0, '行营', 6);
+        drawCampWrapper(ctx, '#424D37', '#538ED5', camps[i], '行营', xStep, chessPosition);
     }
     let strongholds = [1, 3, 56, 58];
     let stronghold;
     for (let i = 0; i < strongholds.length; i++) {
-        stronghold = chessPosition[strongholds[i]];
-        drawStation(canvas, '#424D37', '#538ED5', stronghold[0]*xStep, stronghold[1]*xStep, 3*xStep, 1.5*xStep, 0, '大本营', 6);
+        drawStationWrapper(ctx, '#424D37', '#538ED5', 6,  strongholds[i], '大本营', xStep, chessPosition);   
     }
-    drawMountain(canvas, chessPosition[25][0]*xStep, chessPosition[25][1]*xStep, chessPosition[32][0]*xStep, chessPosition[32][1]*xStep, '山界', '#000', 100);
-    drawMountain(canvas, chessPosition[27][0]*xStep, chessPosition[27][1]*xStep, chessPosition[34][0]*xStep, chessPosition[34][1]*xStep, '山界', '#000', 100);
+    drawMountainWrapper(ctx, 25, 32, '山界', '#000', 100, xStep, chessPosition);
+    drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);  
+    drawHiddenPlaceholder(canvas, 2, 2, chessPosition, xStep);
+    setDrop();
 }
 
-function drawMountain(canvas, x1, y1, x2, y2, text, color, fontSize) {
-    [x1, y1] = getCanvasPoint(canvas, x1, y1);
-    [x2, y2] = getCanvasPoint(canvas, x2, y2);
+function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
+    let placeholders = document.getElementsByClassName('hover');
+    // table = document.getElementById('table');
+    // for (let i = 0; i < placeholders.length; i++) {
+    //     placeholders[i].remove();
+    // }
+    if (placeholders.length) {
+        for (let i = 0; i < placeholders.length; i++) {
+            placeholders[i].setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+        }
+    } else {
+        let documentFragment = new DocumentFragment(), placeholder;
+        for (let i = 0; i < chessPosition.length; i++) {
+            let placeholder = document.createElement('div');     
+            placeholder.setAttribute('class', 'hover');
+            placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+            documentFragment.appendChild(placeholder);
+        }
+        document.getElementById('table').appendChild(documentFragment);
+    }
+}
+
+function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {
+    drawMountain(ctx, chessPosition[index1][0]*xStep, chessPosition[index1][1]*xStep, chessPosition[index2][0]*xStep, chessPosition[index2][1]*xStep, text, color, fontSize);
+}
+
+function drawMountain(ctx, x1, y1, x2, y2, text, color, fontSize) {
+    [x1, y1] = getCanvasPoint( x1, y1);
+    [x2, y2] = getCanvasPoint( x2, y2);
     let x = (x1 + x2)/2;
     let y = (y1 + y2)/2;
-    let ctx = canvas.getContext('2d');
     ctx.filleStyle = color;
     ctx.font = fontSize + 'px serif';
     ctx.fillText(text, x-fontSize * (text.length/2), y+fontSize/4);
 }
 
-function drawLine(canvas, color, x1, y1, x2, y2, lineWidth){
-    let ctx = canvas.getContext('2d');
+function drawLine(ctx, color, x1, y1, x2, y2, lineWidth){
+    // let ctx = canvas.getContext('2d');
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
     ctx.beginPath();
-    [x1, y1] = getCanvasPoint(canvas, x1, y1);
-    [x2, y2] = getCanvasPoint(canvas, x2, y2);
+    [x1, y1] = getCanvasPoint( x1, y1);
+    [x2, y2] = getCanvasPoint( x2, y2);
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
     ctx.closePath();
 }
 
-function drawSubway(canvas, color, xStep, lineWidth) {
-    drawLine(canvas, color, chessPosition[5][0]*xStep, chessPosition[5][1]*xStep, chessPosition[9][0]*xStep, chessPosition[9][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[5][0]*xStep, chessPosition[5][1]*xStep, chessPosition[50][0]*xStep, chessPosition[50][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[9][0]*xStep, chessPosition[9][1]*xStep, chessPosition[54][0]*xStep, chessPosition[54][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[50][0]*xStep, chessPosition[50][1]*xStep, chessPosition[54][0]*xStep, chessPosition[54][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[25][0]*xStep, chessPosition[25][1]*xStep, chessPosition[29][0]*xStep, chessPosition[29][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[30][0]*xStep, chessPosition[30][1]*xStep, chessPosition[34][0]*xStep, chessPosition[34][1]*xStep, lineWidth);
-    drawLine(canvas, color, chessPosition[27][0]*xStep, chessPosition[27][1]*xStep, chessPosition[32][0]*xStep, chessPosition[32][1]*xStep, lineWidth);
+
+
+
+function drawSubway(ctx, color, xStep, lineWidth) {
+    drawLine(ctx, color, chessPosition[5][0]*xStep, chessPosition[5][1]*xStep, chessPosition[9][0]*xStep, chessPosition[9][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[5][0]*xStep, chessPosition[5][1]*xStep, chessPosition[50][0]*xStep, chessPosition[50][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[9][0]*xStep, chessPosition[9][1]*xStep, chessPosition[54][0]*xStep, chessPosition[54][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[50][0]*xStep, chessPosition[50][1]*xStep, chessPosition[54][0]*xStep, chessPosition[54][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[25][0]*xStep, chessPosition[25][1]*xStep, chessPosition[29][0]*xStep, chessPosition[29][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[30][0]*xStep, chessPosition[30][1]*xStep, chessPosition[34][0]*xStep, chessPosition[34][1]*xStep, lineWidth);
+    drawLine(ctx, color, chessPosition[27][0]*xStep, chessPosition[27][1]*xStep, chessPosition[32][0]*xStep, chessPosition[32][1]*xStep, lineWidth);
 }
 
-function drawStation(canvas, bdColor, bgColor, x, y, width, height, direction, text, lineWidth) {
-    let ctx = canvas.getContext('2d');
+function drawStationWrapper(ctx, bdColor, bgColor, lineWidth, index, text, xStep, chessPosition) {
+    drawStation(ctx, bdColor, bgColor, chessPosition[index][0]*xStep, chessPosition[index][1]*xStep, 2*xStep*text.length/2, xStep*text.length/2, text, 6);   
+}
+
+function drawStation(ctx, bdColor, bgColor, x, y, width, height, text, lineWidth) {
     ctx.strokeStyle = bdColor;
     ctx.fillStyle = bgColor;
     ctx.lineWidth = lineWidth;
-    [x, y] = getCanvasPoint(canvas, x, y);
-    [width, height] = getCanvasPoint(canvas, width, height);
+    [x, y] = getCanvasPoint( x, y);
+    [width, height] = getCanvasPoint( width, height);
+    // console.log(ctx);
     ctx.beginPath();
     ctx.moveTo(x-width/2, y-height/2);
     ctx.lineTo(x+width/2, y-height/2);
@@ -156,17 +209,19 @@ function drawStation(canvas, bdColor, bgColor, x, y, width, height, direction, t
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
-    ctx = canvas.getContext('2d');
     ctx.strokeStyle = bdColor;
     ctx.fillStyle = '#000';
-    let fontSize = canvas.width/23;
+    let fontSize = (20*width/text.length)/23; //canvas.width/23
     ctx.font = Math.floor(fontSize) + 'px serif';
     ctx.fillText(text, x-fontSize * (text.length/2), y+9);
 }
 
-function drawCamp(canvas, bdColor, bgColor, x, y, r, direction, text, lineWidth) {
-    let ctx = canvas.getContext('2d');
-    [x, y] = getCanvasPoint(canvas, x, y);
+function drawCampWrapper(ctx, bdColor, bgColor, index, text, xStep, chessPosition) {
+    drawCamp(ctx, '#424D37', '#538ED5', chessPosition[index][0]*xStep, chessPosition[index][1]*xStep, xStep, '行营', 6);    
+}
+
+function drawCamp(ctx, bdColor, bgColor, x, y, r, text, lineWidth) {
+    [x, y] = getCanvasPoint( x, y);
     r = 2*r;
     ctx.strokeStyle = bdColor;
     ctx.fillStyle = bgColor;
@@ -177,35 +232,44 @@ function drawCamp(canvas, bdColor, bgColor, x, y, r, direction, text, lineWidth)
     ctx.stroke();
     ctx.fill();
     ctx.fillStyle = '#000';
-    let fontSize = canvas.width/23;
+    let fontSize = 20*r/23; //canvas.width/23
     ctx.font = Math.floor(fontSize) + 'px serif';
     ctx.fillText(text, x-fontSize, y+9);
 }
 
-function drawStronghold(canvas, bdColor, bgColor, x, y, width, height, text, lineWidth) {
-    let ctx = canvas.getContext('2d');
-    ctx.strokeStyle = bdColor;
-    ctx.fillStyle = bgColor;
-    ctx.lineWidth = lineWidth;
-    [x, y] = getCanvasPoint(canvas, x, y);
-    [width, height] = getCanvasPoint(canvas, width, height);
-    ctx.beginPath();
-    ctx.moveTo(x-width/2, y+height/2);
-    ctx.lineTo(x-width/2, y-height/2);
-    ctx.lineTo(x+width/2, y-height/2);
-    ctx.lineTo(x+width/2, y+height/2);
-    ctx.closePath();
-    ctx.stroke();
-}
+// function drawStronghold(canvas, bdColor, bgColor, x, y, width, height, text, lineWidth) {
+//     let ctx = canvas.getContext('2d');
+//     ctx.strokeStyle = bdColor;
+//     ctx.fillStyle = bgColor;
+//     ctx.lineWidth = lineWidth;
+//     [x, y] = getCanvasPoint( x, y);
+//     [width, height] = getCanvasPoint( width, height);
+//     ctx.beginPath();
+//     ctx.moveTo(x-width/2, y+height/2);
+//     ctx.lineTo(x-width/2, y-height/2);
+//     ctx.lineTo(x+width/2, y-height/2);
+//     ctx.lineTo(x+width/2, y+height/2);
+//     ctx.closePath();
+//     ctx.stroke();
+// }
 
-function getCanvasPoint (canvas, x, y) {
+function getCanvasPoint (x, y) {
     return [
         2 * (x - 0), //canvas 显示大小缩放为实际大小的 50%。为了让图形在 Retina 屏上清晰
         2 * (y - 0)
     ];
 }
 
+// function getCanvasPointTest(index,, chessPosition xStep) {
+//     let x = chessPosition[index][1];
+//     let y = chessPosition[index][0];
+//     x = 4 * x + 2;
+//     y = 2 * y + 2;  
+// }
+
 function Point2D(x, y) {
     this.x = x;
     this.y = y;
 }
+
+setDrop();
