@@ -32,14 +32,17 @@ export function setDrop(){
               dragEl.parentNode.removeChild(dragEl);
           }
           this.appendChild(chessItem);
-          chessMap.push([chessItem.innerHTML,hover.getAttribute('id')]);
+          console.log(this.getAttribute('id'));
+          chessMap.push([chessItem.innerHTML,this.getAttribute('id')]);
           socket.emit('chess',chessMap);
+          console.log(chessMap);
       }
   }
 
 }
 
 socket.on('chess', function (data) {
+    console.log(data);
     let hovers = document.getElementsByClassName('hover');
     for(let hover of hovers) {
         for(let item of data)
