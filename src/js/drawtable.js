@@ -43,7 +43,7 @@ function startTiming() {
     startCall();
 }
 
-function drawtable(canvas, width, height) {
+export function drawtable(canvas, width, height) {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 2*width, 2*height);
     let xStep = width/20;
