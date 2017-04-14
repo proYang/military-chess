@@ -1,0 +1,11 @@
+.hover {
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
+}
+
+.dragSection {
+    background: #000;
+    width: 16%;
+    height: 20%;
+    align-content: center;
+}

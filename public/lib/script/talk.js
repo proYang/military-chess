@@ -1,6 +1,10 @@
 let talkContent = document.getElementById('talkContent'),
 	sendInput = document.getElementById('sendInput'),
-	saveBtn = document.getElementById('saveBtn'),
+	saveBtn = document.getElementById('saveBtn'), 
+	realSendContent = document.getElementById('realSendContent'),
+	faceEmoji = document.getElementById('faceEmoji'),
+	defalutSelectContent = document.getElementById('defalutSelectContent'),
+	showDefaultContent = document.getElementById('showDefaultContent'),
 	socket = io('http://chess.slane.cn/');
 const JOINROOM = 'joinroom',      // 加入房间的事件
 	CHAT = 'chat';              // 聊天的事件
@@ -18,21 +22,17 @@ function createContentNode (val) {
 }
 
 function btnHanfler() {
-	let val = sendInput.value;
-	if(!val) {
-		alert('please input content');
+	if(/<div>/.test(realSendContent.innerHTML)) {
+		realSendContent.innerHTML = '';
+	}
+	let val = realSendContent.innerHTML;
+	if(val === '') { 	
+		// alert('please input content');
 		return;
 	}
 	createContentNode(val);
 	socket.emit(CHAT, val);
-	sendInput.value = '';
-	// 通过localstroge得到用户id
-	let storage = window.localStorage;
-	let nick = storage.getItem('nick'),
-		userID = storage.getItem('user_id');
-	console.log(nick,userID);
-	// TODO 发送websocket
-	// 监看
+	realSendContent.innerHTML = '';
 }
 
 function linsenRoomStatus(data) {
@@ -51,17 +51,50 @@ function updateList(res) {
 	createContentNode(msg);
 }
 function sendDateByEnter(ev) {
-	if(ev.keyCode !== 13) return ;
-	btnHanfler();
+		console.log(111);
+	if(ev.keyCode === 13) {
+		btnHanfler();
+		return ;
+	}
+	realSendContent.innerHTML = '';
 }
-function listen() {
-	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
-	let data = getNickAndID();  // 得到这个房间的用户和ID
-	socket.emit(JOINROOM, data); // 向房间里的其他人物发送信息
-	socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
-	sendInput.addEventListener('keydown',sendDateByEnter,false);
+function toggleDefaultContent() {
+	let  ifShow = defalutSelectContent.style.display === 'block';
+	console.log(ifShow);
+	defalutSelectContent.style.display = ifShow ? 'none' : 'block';
+	showDefaultContent.className = !ifShow ? 'hide-default_content':'show-default_content' ;
 }
 
+function defaultContent(ev) {
+	if(ev.target.nodeName !== 'LI') return;
+	let val = ev.target.innerHTML;
+	createContentNode(val);
+	socket.emit(CHAT, val);
+}	
+
+function selectEmoji (ev) {
+	if(ev.target.nodeName !== 'IMG') return;
+	let emojiSrc = ev.target.src;
+	// sendInput.value+=`<img src="${emojiSrc}">`;
+	realSendContent.innerHTML+=`<img src="${emojiSrc}">`;
+}
+function focusInputContent() {
+	defalutSelectContent.style.display = 'none';
+	showDefaultContent.className = 'hide-default_content';
+}
+function listen(ev) {
+	console.log(666);
+	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
+	faceEmoji.addEventListener('click',selectEmoji,false);// 监听点击表情的事件
+	defalutSelectContent.addEventListener('click',defaultContent,false);// 默认选中文字的事件
+	showDefaultContent.addEventListener('click',toggleDefaultContent,false);
+	let data = getNickAndID();  // 得到这个房间的用户和ID
+	socket.emit(JOINROOM, data); // 向房间里的其他人物发送信息
+	//socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
+	realSendContent.addEventListener('keydown',sendDateByEnter,false);
+	realSendContent.addEventListener('focus',focusInputContent,false);
+
+}
 module.exports = {
 	listen
-}
+};

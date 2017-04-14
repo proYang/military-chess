@@ -7,8 +7,39 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="./src/style/normalize.css">
     <link rel="stylesheet" type="text/css" href="./src/style/table.css">
+    <link rel="stylesheet" href="./src/style/chesspiece.css">
+    <link rel="stylesheet" href="./src/style/drag.css">
 </head>
 <body>
+<div id="login">
+    <div class="index-main">
+        <div class="index-main-body">
+            <div class="index-header">
+                <h1>军棋</h1>
+            </div>
+            <p class="prompt">请选择房间号：</p>
+            <div class="index-rooms">
+                <ul id="rooms">
+                    <!--<li class="chess-room">房间号：1，2人，已满</li>-->
+                    <!--<li class="chess-room">房间号：2，0人，未满</li>-->
+                    <!--<li class="chess-room">房间号：1，2人，已满</li>-->
+                    <!--<li class="chess-room">房间号：2，0人，未满</li>-->
+                    <!--<li class="chess-room">房间号：1，2人，已满</li>-->
+                    <!--<li class="chess-room">房间号：2，0人，未满</li>-->
+                    <!--<li class="chess-room">房间号：1，2人，已满</li>-->
+                    <!--<li class="chess-room">房间号：2，0人，未满</li>-->
+                    <!--<li class="chess-room">房间号：1，2人，已满</li>-->
+                    <!--<li class="chess-room">房间号：2，0人，未满</li>-->
+                </ul>
+            </div>
+            <!--<form class="login-box" method="post">-->
+            <input class="login-name-input" id="login-name-input" type="text" name="name" aria-label="姓名" placeholder="请输入昵称">
+            <button class="login-btn submit" id="login-submit" aria-label="进入游戏">进入游戏</button>
+            <!--</form>-->
+        </div>
+    </div>
+</div>
+<div id="game">
     <div id="wrap">
         <div id="container">
             <aside id="aside">
@@ -18,10 +49,33 @@
                         <div class="time-step" id="time">0:0:0</div>
                         <div class="time-step">步数 0</div>
                     </div>
-                    <div><div class="btn">求 和</div></div>
-                    <div><div class="btn">投 降</div></div>
+                    <div><div class="btn btn-nego" id="negotiation">求 和</div></div>
+                    <div><div class="btn btn-nego" id="surrender">投 降</div></div>
                 </div>
-                <div class="chesses"></div>
+                <div class="chesses">
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军旗</div>
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军旗</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军长</div>
+                    </div>
+                    <div class="dragSection">
+                        <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">师长</div>
+                    </div>
+                </div>
                 <div class="chesses"></div>
                 <div id="dialog">
                     <div class="talk">
@@ -32,18 +86,52 @@
                             </div>
                         </div>
                         <div class="talk-send clearfix">
-                            <input id="sendInput" type="text" class="talk-send_input" placeholder="请输入要发送的文字" >
-                            <div id="saveBtn" class="talk-send_btn">发送</div>
+                            <div class="default-select_content" id="defalutSelectContent">
+                                <ul>
+                                    <li>快点呀，我等到花儿都凋谢了</li>
+                                    <li>快点呀，我等到花儿都凋谢了</li>
+                                    <li>快点呀，我等到花儿都凋谢了</li>
+                                </ul>
+                                <div class="face-emoji" id="faceEmoji">
+                                    <span><img src="../public/lib/img/1.png" alt=""></span>
+                                    <span><img src="../public/lib/img/2.png" alt=""></span>
+                                    <span><img src="../public/lib/img/3.png" alt=""></span>
+                                    <span><img src="../public/lib/img/4.png" alt=""></span>
+                                    <span><img src="../public/lib/img/5.png" alt=""></span>
+                                    <span><img src="../public/lib/img/6.png" alt=""></span>
+                                    <span><img src="../public/lib/img/7.png" alt=""></span>
+                                    <span><img src="../public/lib/img/8.png" alt=""></span>
+                                </div>
+                            </div>
+                            <input id="sendInput" type="text" class="talk-send_input" placeholder="">
+                            <p contenteditable="true" class="real-send_content" id="realSendContent"></p>
+                            <div class="show-default_content" id="showDefaultContent"></div>
+                            <div  id="saveBtn" class="talk-send_btn">发送</div>
                         </div>
                     </div>
                 </div>
             </aside>
             <div id="table">
                 <canvas id="chess-table"></canvas>
+            </div>
+
             </div> 
+
+    </div>
+    <div id="mask" class="hidden">
+        <div id="mask-table">
+            <div id="mask-content">
+                <p></p>
+            </div>
+            <div id="btn-warpper">
+                <button class="btn mask-btn" id="mask-btn-1">确定</button>
+                <button class="btn mask-btn" id="mask-btn-2">取消</button>
+            </div>
         </div>
     </div>
-     <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 
-    <script src="./public/dist/index.js"></script>
+<<<<<<< HEAD
+</div>
+<script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script>
+<script src="./public/dist/index.js"></script>
 </body>
 </html>
