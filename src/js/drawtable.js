@@ -1,6 +1,6 @@
 import {chessPosition} from './global';
 import {setDrop} from '../../public/lib/script/drag';
-console.log(setDrop);
+// console.log(setDrop);
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -24,6 +24,10 @@ window.onload = function() {
         canvas.height = 2 * height;
         drawtable(canvas, width, height);
     });
+
+    document.getElementById('negotiation').addEventListener('click', function(event) {
+        
+    })
     startTiming();
 }
 
@@ -109,15 +113,20 @@ function drawtable(canvas, width, height) {
 }
 
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
+    let placeholders = document.getElementsByClassName('hover');
+    // table = document.getElementById('table');
+    for (let i = 0; i < placeholders.length; i++) {
+        placeholders[i].remove();
+    }
     let documentFragment = new DocumentFragment(), placeholder;
     for (let i = 0; i < chessPosition.length; i++) {
         let placeholder = document.createElement('div');     
         placeholder.setAttribute('class', 'hover');
-        placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
+        placeholder.setAttribute('style', 'z-index: 1; position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
         documentFragment.appendChild(placeholder);
     }
-    // console.log(documentFragment);
-    document.getElementById('table').appendChild(documentFragment);
+    // document.getElementById('table').appendChild(documentFragment);
+    document.getElementById('table').insertBefore(documentFragment, document.getElementById('chess-table'));
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {
