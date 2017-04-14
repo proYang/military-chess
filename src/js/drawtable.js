@@ -133,16 +133,21 @@ function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, x
     for (let i = 0; i < placeholders.length; i++) {
         placeholders[i].remove();
     }
-    let documentFragment = new DocumentFragment(), placeholder;
-    for (let i = 0; i < chessPosition.length; i++) {
-        let placeholder = document.createElement('div');     
-        placeholder.setAttribute('class', 'hover');
-        console.log('left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + chessPosition[i][1]*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep);
-        placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
-        documentFragment.appendChild(placeholder);
+    if (placeholders.length) {
+        for (let i = 0; i < placeholders.length; i++) {
+            placeholders[i].setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+            
+        }
+    } else {
+        let documentFragment = new DocumentFragment(), placeholder;
+        for (let i = 0; i < chessPosition.length; i++) {
+            let placeholder = document.createElement('div');     
+            placeholder.setAttribute('class', 'hover');
+            placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+            documentFragment.appendChild(placeholder);
+        }
+        document.getElementById('table').appendChild(documentFragment);
     }
-    document.getElementById('table').appendChild(documentFragment);
-    // document.getElementById('table').insertBefore(documentFragment, document.getElementById('chess-table'));
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {
