@@ -16,6 +16,7 @@ game.style.display = 'none';
 
 // 得到当前所有房间的状态
 socket.on('roomstatus', function(data){
+    console.log(data);
     rooms.innerHTML = '';
     for(let i = 0; i < data.length; i++){
         roomLi(rooms,data[i].roomId+1,data[i].users.length);
@@ -38,6 +39,7 @@ function roomLi(el,roomId,personNum) {
 
 // 监听房间号选择事件
 rooms.addEventListener('click',function(e){
+    e.preventDefault();
     for(let i = 0; i < rooms.childNodes.length; i++){
         delClassName(rooms.childNodes[i],'chess-room-active');
     }
@@ -49,6 +51,7 @@ rooms.addEventListener('click',function(e){
                 e.target.className = e.target.className + ' chess-room-active';
             }
             checkedRoom = getRoomId(e.target);
+            console.log(checkedRoom);
         }
     }
 });
@@ -68,15 +71,16 @@ function getUserName(el) {
     return el.value;
 }
 
+//debugger;
 // 点击进入游戏监听事件
-loginBtn.addEventListener('click',() => {
+loginBtn.addEventListener('click',(e) => {
+    e.stopPropagation();
+    e.preventDefault();
     let name = getUserName(nameInput);
     let data = {
         userName: name,
         roomId: checkedRoom - 1
     };
-    console.log(checkedRoom);
-    socket.emit('joinroom', data);
     game.style.display = 'block';
     loginPage.style.display = 'none';
     // 初始化canvas
@@ -92,6 +96,8 @@ loginBtn.addEventListener('click',() => {
         transform: 'translate(-50%, -50%) scale(0.5)',
     });
     drawtable(canvas, width, height);
+    console.log(111);
+    socket.emit('joinroom', data);
 });
 
 // 删除元素的className
