@@ -7,6 +7,6 @@ import '../style/talk.scss';
 import './drag.js';
 import './login.js';
 import '../style/login.css'
-//import talkObj from'./talk.js';
+import talkObj from'./talk.js';
 
-//talkObj.listen(); // 监听聊天的所有
+talkObj.listen(); // 监听聊天的所有
