@@ -59,7 +59,13 @@ window.onload = function() {
                     document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "双方平局";
                 } else if (data.type === 'fail') {
                     sendNegotiationFlag = false;
-                    //显示求和失败
+                    let mask = document.getElementById('mask');
+                    if (mask.className.indexOf('hidden') === -1) {
+                        mask.className += 'hidden';
+                    } else {
+                        mask.className = mask.className.replace('hidden', '');
+                    }
+                    document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "求和失败";
                 }
             } else {
                 if (data.type === 'comfirm') {
@@ -78,20 +84,18 @@ window.onload = function() {
 
     socket.on('surrender', function(data){
         if (game) {
-            if (receiveSurrenderFlag) {
-                if (date.type === 'win') {
-                    // 处理接收投降
-                    receiveSurrenderFlag = true;
-                    let mask = document.getElementById('mask');
-                    if (mask.className.indexOf('hidden') === -1) {
-                        mask.className += 'hidden';
-                    } else {
-                        mask.className = mask.className.replace('hidden', '');
-                    }
-                    document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "对方已经投降";
-                    game = false;
+            if (date.type === 'win') {
+                // 处理接收投降
+                receiveSurrenderFlag = true;
+                let mask = document.getElementById('mask');
+                if (mask.className.indexOf('hidden') === -1) {
+                    mask.className += 'hidden';
+                } else {
+                    mask.className = mask.className.replace('hidden', '');
                 }
-            }
+                document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "对方已经投降";
+                game = false;
+            }    
         }
     });
 
@@ -108,15 +112,15 @@ window.onload = function() {
                     type: 'leave'
                 }
                 socket.emit('negotiation', data);
-                game = false;
-                document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "等待对方接收平局请求";
+                // game = false;
+                // document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "等待对方接收平局请求";
             }
             if (sendSurrenderFlag) {
                 let data = {
                     type: 'fail'
                 }
                 socket.emit('surrender', data);
-               document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "您已失败";                
+                document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "您已失败";                
                 game = false;
             }
             if (receiveNegotiationFlag) {
@@ -154,6 +158,7 @@ window.onload = function() {
                     type: 'fail'
                 }
                 socket.emit('negotiation', data);
+                receiveNegotiationFlag = false;
              }
             if (receiveSurrenderFlag) {
                 receiveSurrenderFlag = false;
