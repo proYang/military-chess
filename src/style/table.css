@@ -99,9 +99,9 @@
   margin: 5% auto; }
 
 #dialog {
-  height: 50%;
   width: 90%;
   margin: 0 auto;
+  overflow: hidden;
   background-color: #B8C7C9; }
 
 #mask {

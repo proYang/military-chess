@@ -103,24 +103,24 @@ export default class ChessBoard {
            }
         }
     }
-    static getBoardRow(){
+    getBoardRow(){
         return boardRow;
     }
-    static getBoardCol(){
+    getBoardCol(){
         return boardRow;
     }
-    static getChessInPosition(){
+    getChessInPosition(){
         return chessInPosition;
     }
 
-    static initSuperPoint(){                                           // 初始化铁路点
+    initSuperPoint(){                                           // 初始化铁路点
         for(let x=0;x<boardRow;x++){
             for(let y=0;y<boardCol;y++){
                 superPoint[x][y] = (x >= 1 && x <= 10 && (y === 0 || y === 4)) || (x === 1 || x === 5 || x === 6 || x === 10);
             }
         }
     }
-    static isSuperPoint(x, y){
+    isSuperPoint(x, y){
         return !!superPoint[x][y];
     }
 
