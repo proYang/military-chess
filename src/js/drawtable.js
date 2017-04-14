@@ -26,8 +26,23 @@ window.onload = function() {
     });
 
     document.getElementById('negotiation').addEventListener('click', function(event) {
-        
-    })
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+    document.getElementById('surrender').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+
+    document.getElementById('mask-btn-2').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        console.log(mask.className.indexOf('hidden'));
+        if (mask.className.indexOf('hidden') === -1) {
+            mask.className += 'hidden';
+        } else {
+            mask.className = mask.className.replace('hidden', '');
+        }
+    });
     startTiming();
 }
 
@@ -122,11 +137,11 @@ function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, x
     for (let i = 0; i < chessPosition.length; i++) {
         let placeholder = document.createElement('div');     
         placeholder.setAttribute('class', 'hover');
-        placeholder.setAttribute('style', 'z-index: 1; position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
+        placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
         documentFragment.appendChild(placeholder);
     }
-    // document.getElementById('table').appendChild(documentFragment);
-    document.getElementById('table').insertBefore(documentFragment, document.getElementById('chess-table'));
+    document.getElementById('table').appendChild(documentFragment);
+    // document.getElementById('table').insertBefore(documentFragment, document.getElementById('chess-table'));
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {

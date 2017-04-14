@@ -133,7 +133,6 @@ $btnNegoBackgroundColor: #B8C7C9;
     background-color: $btnNegoBackgroundColor;
 }
 #mask {
-    display: none;
     height: 100%; 
     width: 100%; 
     background-color: rgba(0, 0, 0, 0.75);
@@ -141,6 +140,9 @@ $btnNegoBackgroundColor: #B8C7C9;
     top: 0; 
     left: 0;
     z-index: 100;
+}
+.hidden {
+    display: none;
 }
 #mask-table {
     height: 190px;
