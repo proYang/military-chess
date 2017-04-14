@@ -103,30 +103,11 @@ export default class extends Base {
   }
 
   chessAction(self) {
-    // 棋局相关
-    // var data = {
-    //   type: 'move',
-    //   data: {},
-    //   msg: '对方已移动棋子'
-    // }
-    // var data = {
-    //   type: 'fail',
-    //   data: {},
-    //   msg: '对方选择投降'
-    // }
-    // var data = {
-    //   type: 'leave',
-    //   data: {},
-    //   msg: '对方选择求和'
-    // }
+    // 同步棋子相关
     let socket = self.http.socket;
-    console.log(socket.userName + ' in ' + socket.roomId + self.http.data)
-    socket.broadcast.to(socket.roomId).emit('chess', {
-      userName: socket.userName,
-      message: self.http.data
-    });
-
-
+    let roomId = socket.roomId;
+    console.log(socket.userName + ' chess ' + socket.roomId + self.http.data)
+    socket.broadcast.to(socket.roomId).emit('chess', self.http.data);
   }
 
   surrenderAction(self) {
@@ -143,7 +124,7 @@ export default class extends Base {
       // 选择投降
       console.log(socket.userName + 'surrender ' + socket.roomId)
       // 通知房间其他用户赢了
-      socket.broadcast.to(socket.roomId).emit('status', { type: 'win' });
+      socket.broadcast.to(socket.roomId).emit('surrender', { type: 'win' });
       // 清人
       rooms[roomId].users = []
     }
