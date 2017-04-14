@@ -56,9 +56,10 @@ function sendDateByEnter(ev) {
 		console.log(111);
 	if(ev.keyCode === 13) {
 		btnHanfler();
+		realSendContent.innerHTML = '';
 		return ;
 	}
-	realSendContent.innerHTML = '';
+	
 }
 function toggleDefaultContent() {
 	let  ifShow = defalutSelectContent.style.display === 'block';
