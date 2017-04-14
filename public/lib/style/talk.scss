@@ -1,8 +1,8 @@
 @import "mixins.scss";
 
 .talk {
-	width:200px;
-	height: 200px;
+	width:100%;
+	height: 100%;
 	background:rgba(222,222,222,.2);
 	.talk-content{
 		overflow-y: auto;
@@ -37,9 +37,7 @@
 		}
 	}
 	.talk-send  {
-		height: 16%;
-		width: 100%;
-		padding-top: 15px;
+		padding-top: 33px;
 		.talk-send_input {
 			padding: 6px 2px;
 			box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
@@ -49,7 +47,7 @@
 		.talk-send_btn {
 			height: 90%;
 			cursor: pointer;
-			padding: 2px 3px;
+			padding: 2px 12px;
 			overflow: hidden;
 			font-size: 14px;
 			color:#ccc;
