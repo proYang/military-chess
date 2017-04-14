@@ -1,7 +1,7 @@
 $backgroudColor: #1875e7;
-$asideBackgroundColor: #FFE14E;
-$chessBackgroundColor: #4AAD1E;
-$btnNegoBackgroundColor: #ECECEB;
+$asideBackgroundColor: #7E9582;
+$chessBackgroundColor: #8D8E6A;
+$btnNegoBackgroundColor: #B8C7C9;
 
 #wrap {
     padding-top: 55%;
@@ -82,22 +82,33 @@ $btnNegoBackgroundColor: #ECECEB;
     cursor: pointer;
     margin-bottom: 5%;
     border-color: #eea236;
+
+    background-color: #4162a8;
+    border-top: 1px solid #38538c;
+    border-right: 1px solid #1f2d4d;
+    border-bottom: 1px solid #151e33;
+    border-left: 1px solid #1f2d4d;
+    -webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 4px 4px 1px #111111;
+    box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 4px 4px 1px #111111;
+
 }
 #time-steps {
     width: 50%;
     height: 90%;
     max-height: 80px;
+    padding: 2px;
     float: right;
-    background-color: $btnNegoBackgroundColor;
+    background-color: #B8C7C9;
     border: 1px solid transparent;
-    border-color: #eea236;    
+    border-color: #eea236;  
+    border-radius: 5%;  
 }
 .time-step {
     color: #333;
     width: 100%;
     box-sizing: border-box;
     padding: 2px 12px;
-    background-color: $btnNegoBackgroundColor;
+    background-color: #B8C7C9;
     font-size: 14px;
     line-height: 1.42857143;
     text-align: center;

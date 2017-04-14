@@ -50,11 +50,16 @@ function updateList(res) {
 	let msg = res.message;
 	createContentNode(msg);
 }
+function sendDateByEnter(ev) {
+	if(ev.keyCode !== 13) return ;
+	btnHanfler();
+}
 function listen() {
 	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
 	let data = getNickAndID();  // 得到这个房间的用户和ID
-	socket.emit(JOINROOM, data)
-	socket.on(CHAT, updateList);
+	socket.emit(JOINROOM, data); // 向房间里的其他人物发送信息
+	socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
+	sendInput.addEventListener('keydown',sendDateByEnter,false);
 }
 
 module.exports = {
