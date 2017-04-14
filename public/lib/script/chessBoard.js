@@ -103,24 +103,24 @@ export default class ChessBoard {
            }
         }
     }
-    getBoardRow(){
+    static getBoardRow(){
         return boardRow;
     }
-    getBoardCol(){
+    static getBoardCol(){
         return boardRow;
     }
-    getChessInPosition(){
+    static getChessInPosition(){
         return chessInPosition;
     }
 
-    initSuperPoint(){                                           // 初始化铁路点
+    static initSuperPoint(){                                           // 初始化铁路点
         for(let x=0;x<boardRow;x++){
             for(let y=0;y<boardCol;y++){
                 superPoint[x][y] = (x >= 1 && x <= 10 && (y === 0 || y === 4)) || (x === 1 || x === 5 || x === 6 || x === 10);
             }
         }
     }
-    isSuperPoint(x, y){
+    static isSuperPoint(x, y){
         return !!superPoint[x][y];
     }
 
@@ -128,6 +128,10 @@ export default class ChessBoard {
     isAccessable(locX, locY, disX, disY){
         if(locX === disX && locY ===disY)
             return true;
+        //目标点是行营
+        if(((disX===2 || disX===4 || disX===7 || disX===9) && (disY===1 || disY===3)) || ((disX===3 || disX===8) && disY===2)){
+            return Math.abs(locX-disX)<=1 && Math.abs(locY-disY)<=1;
+        }
         if(!this.isSuperPoint(locX, locY)){
             if(locX+1<boardRow && (locX+1===disX && locY===disY)){
                 return true;
@@ -183,12 +187,14 @@ export default class ChessBoard {
     }
     getAccessablePointArr(locX, locY){
         let accessablePointArr = [],
-            boardRow = this.getBoardRow(),
-            boardCol = this.getBoardCol(),
-            chessInPosition = this.getChessInPosition(),
+            boardRow = ChessBoard.getBoardRow(),
+            boardCol = ChessBoard.getBoardCol(),
+            chessInPosition = ChessBoard.getChessInPosition(),
             cnt=0
         ;
-        for(let i=0;i<100;i++) {accessablePointArr[i] = [];}
+        for(let i=0;i<100;i++) {
+            accessablePointArr[i] = [];
+        }
         for(let x=0;x<boardRow;x++){
             for(let y=0;y<boardCol;y++){
                 if(dfsAccessablePoint(locX, locY, x, y))
