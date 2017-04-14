@@ -2,6 +2,13 @@ import {chessPosition} from './global';
 import {setDrop} from '../../public/lib/script/drag';
 // console.log(setDrop);
 window.onload = function() {
+    let game = true;
+    let sendNegotiationFlag = false;
+    let sendSurrenderFlag = false;
+    let receiveNegotiationFlag = false;
+    let receiveSurrenderFlag = false;
+    const socket = io('http://chess.slane.cn/');
+
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
     canvas.width = 2 * width;
@@ -28,20 +35,94 @@ window.onload = function() {
     document.getElementById('negotiation').addEventListener('click', function(event) {
         let mask = document.getElementById('mask');
         mask.className = mask.className.replace('hidden', '');
+        sendNegotiationFlag = true;
     });
     document.getElementById('surrender').addEventListener('click', function(event) {
         let mask = document.getElementById('mask');
         mask.className = mask.className.replace('hidden', '');
+        sendSurrenderFlag = true;
+    });
+
+    socket.on('negotiation', function(data){
+        if (game) {
+            if (sendNegotiationFlag) {
+
+            }
+            if (receiveNegotiationFlag) {
+                receiveNegotiationFlag = true;
+                let mask = document.getElementById('mask');
+                if (mask.className.indexOf('hidden') === -1) {
+                    mask.className += 'hidden';
+                } else {
+                    mask.className = mask.className.replace('hidden', '');
+                }
+            }
+        }  
+    });
+
+    socket.on('surrender', function(data){
+        if (game) {
+            if (receiveSurrenderFlag) {
+                if (date.type === 'win') {
+                    // 处理接收投降
+                    receiveNegotiationFlag = true;
+                    let mask = document.getElementById('mask');
+                    if (mask.className.indexOf('hidden') === -1) {
+                        mask.className += 'hidden';
+                    } else {
+                        mask.className = mask.className.replace('hidden', '');
+                    }
+                    document.getElementById('mask-content').getElementsByTagName('p').innerText = "对方已经投降";
+                    game = false;
+                }
+            }
+        }
+    });
+
+    document.getElementById('mask-btn-1').addEventListener('click', function(event) { 
+        if (game) {
+            if (sendNegotiationFlag) {
+               socket.emit('negotiation', data);
+            }
+            if (sendSurrenderFlag) {
+                let data = {
+                    type: 'fail'
+                }
+                socket.emit('surrender', data);
+                game = false;
+            }
+            if (receiveNegotiationFlag) {
+                socket.emit('negotiation', data);
+                game = false;
+            }
+            if (receiveSurrenderFlag) {
+                // socket.emit('surrender', data);   
+                game = false;       
+            }
+        }
     });
 
     document.getElementById('mask-btn-2').addEventListener('click', function(event) {
-        let mask = document.getElementById('mask');
-        console.log(mask.className.indexOf('hidden'));
-        if (mask.className.indexOf('hidden') === -1) {
-            mask.className += 'hidden';
-        } else {
-            mask.className = mask.className.replace('hidden', '');
-        }
+        if (game) {
+            let mask = document.getElementById('mask');
+            if (mask.className.indexOf('hidden') === -1) {
+                mask.className += 'hidden';
+            } else {
+                mask.className = mask.className.replace('hidden', '');
+            }
+            if (sendNegotiationFlag) {
+                sendNegotiationFlag = false;
+            }
+            if (sendSurrenderFlag) {
+                snedSurrenderFlag = false;
+            }
+            if (receiveNegotiationFlag) {
+                socket.emit('negotiation', data);            
+            }
+            if (receiveSurrenderFlag) {
+                // socket.emit('surrender', data);          
+            }
+        } 
     });
     startTiming();
 }
@@ -123,25 +204,30 @@ export function drawtable(canvas, width, height) {
     }
     drawMountainWrapper(ctx, 25, 32, '山界', '#000', 100, xStep, chessPosition);
     drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);  
-    drawHiddenPlaceholder(canvas, 2, 1, chessPosition, xStep);
+    drawHiddenPlaceholder(canvas, 2, 2, chessPosition, xStep);
     setDrop();
 }
 
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
     let placeholders = document.getElementsByClassName('hover');
     // table = document.getElementById('table');
-    for (let i = 0; i < placeholders.length; i++) {
-        placeholders[i].remove();
+    // for (let i = 0; i < placeholders.length; i++) {
+    //     placeholders[i].remove();
+    // }
+    if (placeholders.length) {
+        for (let i = 0; i < placeholders.length; i++) {
+            placeholders[i].setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+        }
+    } else {
+        let documentFragment = new DocumentFragment(), placeholder;
+        for (let i = 0; i < chessPosition.length; i++) {
+            let placeholder = document.createElement('div');     
+            placeholder.setAttribute('class', 'hover');
+            placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+            documentFragment.appendChild(placeholder);
+        }
+        document.getElementById('table').appendChild(documentFragment);
     }
-    let documentFragment = new DocumentFragment(), placeholder;
-    for (let i = 0; i < chessPosition.length; i++) {
-        let placeholder = document.createElement('div');     
-        placeholder.setAttribute('class', 'hover');
-        placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
-        documentFragment.appendChild(placeholder);
-    }
-    document.getElementById('table').appendChild(documentFragment);
-    // document.getElementById('table').insertBefore(documentFragment, document.getElementById('chess-table'));
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {
