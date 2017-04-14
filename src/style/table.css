@@ -141,6 +141,12 @@
 #mask-content {
   width: 80%;
   height: 50%;
-  margin: 10% auto; }
+  margin: 10% auto;
+  overflow: hidden; }
+
+#mask-content p {
+  display: block;
+  margin: 50px auto;
+  text-align: center; }
 
 /*# sourceMappingURL=table.css.map */
