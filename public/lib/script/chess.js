@@ -37,7 +37,7 @@ export default class Chess{
     setRole(role){
         this.chessRoleId = this.getRoleToId(role);
     }
-    static getRoleToId(role){
+    getRoleToId(role){
         return roles.indexOf(role);
     }
     getBiggerChess(chess1,chess2){
