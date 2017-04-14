@@ -1,6 +1,6 @@
 import {chessPosition} from './global';
 import {setDrop} from '../../public/lib/script/drag';
-console.log(setDrop);
+// console.log(setDrop);
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -23,6 +23,25 @@ window.onload = function() {
         canvas.width = 2 * width;
         canvas.height = 2 * height;
         drawtable(canvas, width, height);
+    });
+
+    document.getElementById('negotiation').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+    document.getElementById('surrender').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        mask.className = mask.className.replace('hidden', '');
+    });
+
+    document.getElementById('mask-btn-2').addEventListener('click', function(event) {
+        let mask = document.getElementById('mask');
+        console.log(mask.className.indexOf('hidden'));
+        if (mask.className.indexOf('hidden') === -1) {
+            mask.className += 'hidden';
+        } else {
+            mask.className = mask.className.replace('hidden', '');
+        }
     });
     startTiming();
 }
@@ -104,20 +123,30 @@ export function drawtable(canvas, width, height) {
     }
     drawMountainWrapper(ctx, 25, 32, '山界', '#000', 100, xStep, chessPosition);
     drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);  
-    drawHiddenPlaceholder(canvas, 2, 1, chessPosition, xStep);
+    drawHiddenPlaceholder(canvas, 2, 2, chessPosition, xStep);
     setDrop();
 }
 
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
-    let documentFragment = new DocumentFragment(), placeholder;
-    for (let i = 0; i < chessPosition.length; i++) {
-        let placeholder = document.createElement('div');     
-        placeholder.setAttribute('class', 'hover');
-        placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
-        documentFragment.appendChild(placeholder);
+    let placeholders = document.getElementsByClassName('hover');
+    // table = document.getElementById('table');
+    // for (let i = 0; i < placeholders.length; i++) {
+    //     placeholders[i].remove();
+    // }
+    if (placeholders.length) {
+        for (let i = 0; i < placeholders.length; i++) {
+            placeholders[i].setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+        }
+    } else {
+        let documentFragment = new DocumentFragment(), placeholder;
+        for (let i = 0; i < chessPosition.length; i++) {
+            let placeholder = document.createElement('div');     
+            placeholder.setAttribute('class', 'hover');
+            placeholder.setAttribute('style', 'left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight/2)*xStep + 'px; width: ' +  chessWidth*xStep + 'px; height: ' + chessHeight*xStep + 'px;');       
+            documentFragment.appendChild(placeholder);
+        }
+        document.getElementById('table').appendChild(documentFragment);
     }
-    // console.log(documentFragment);
-    document.getElementById('table').appendChild(documentFragment);
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {

@@ -13,8 +13,27 @@
 		</div>
 	</div>
 	<div class="talk-send clearfix">
-		<input id="sendInput" type="text" class="talk-send_input" placeholder="请输入要发送的文字" >
-		<div id="saveBtn" class="talk-send_btn">发送</div>
+		<div class="default-select_content" id="defalutSelectContent">
+			<ul>
+				<li>快点呀，我等到花儿都凋谢了</li>
+				<li>快点呀，我等到花儿都凋谢了</li>
+				<li>快点呀，我等到花儿都凋谢了</li>
+			</ul>
+			<div class="face-emoji" id="faceEmoji">
+				<span><img src="../lib/img/1.png" alt=""></span>
+				<span><img src="../lib/img/2.png" alt=""></span>
+				<span><img src="../lib/img/3.png" alt=""></span>
+				<span><img src="../lib/img/4.png" alt=""></span>
+				<span><img src="../lib/img/5.png" alt=""></span>
+				<span><img src="../lib/img/6.png" alt=""></span>
+				<span><img src="../lib/img/7.png" alt=""></span>
+				<span><img src="../lib/img/8.png" alt=""></span>
+			</div>
+		</div>
+		<input id="sendInput" type="text" class="talk-send_input" placeholder="">
+		<p contenteditable="true" class="real-send_content" id="realSendContent"></p>
+		<div class="show-default_content" id="showDefaultContent"></div>
+		<div  id="saveBtn" class="talk-send_btn">发送</div>
 	</div>
 </div>
  <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 

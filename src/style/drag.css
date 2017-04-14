@@ -1,8 +1,6 @@
 .hover {
-    background: #000;
-    width: 10%;
-    height: 3.33%;
-    visibility: hidden;
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
 }
 
 .dragSection {

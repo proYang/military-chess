@@ -49,8 +49,8 @@
                         <div class="time-step" id="time">0:0:0</div>
                         <div class="time-step">步数 0</div>
                     </div>
-                    <div><div class="btn">求 和</div></div>
-                    <div><div class="btn">投 降</div></div>
+                    <div><div class="btn btn-nego" id="negotiation">求 和</div></div>
+                    <div><div class="btn btn-nego" id="surrender">投 降</div></div>
                 </div>
                 <div class="chesses">
                     <div class="dragSection">
@@ -99,16 +99,25 @@
             </div> 
 
     </div>
-    <div id="mask">
+    <div id="mask" class="hidden">
         <div id="mask-table">
-            <div id="mask-content"></div>
-            <button id="mask-btn-1"></button>
-            <button id="mask-btn-2"></button>
+            <div id="mask-content">
+                <p></p>
+            </div>
+            <div id="btn-warpper">
+                <button class="btn mask-btn" id="mask-btn-1">确定</button>
+                <button class="btn mask-btn" id="mask-btn-2">取消</button>
+            </div>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
 <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script>
 <script src="./public/dist/index.js"></script>
 
+=======
+    <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 
+    <script src="./public/dist/index.js"></script>
+>>>>>>> 5ecbf8e84abfb8c9e783db34984b64872afdb5bb
 </body>
 </html>
