@@ -9,7 +9,9 @@ let roles = ['军旗','工兵','排长','连长','营长','团长','旅长','师
 ;
 export default class Chess{
     constructor(chessRoleId){
-        this.setRole(chessRoleId);
+        if(typeof chessRoleId==='string')
+            chessRoleId = this.getRoleToId(chessRoleId);
+        this.setRoleId(chessRoleId);
     }
     getOwner(){
         return this.player;
@@ -28,6 +30,12 @@ export default class Chess{
     }
     setPos(x, y){
         this.pos = [x, y];
+    }
+    getRole(){
+        return roles[this.chessRoleId];
+    }
+    setRole(role){
+        this.chessRoleId = this.getRoleToId(role);
     }
     getRoleToId(role){
         return roles.indexOf(role);
