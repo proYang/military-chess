@@ -1,11 +1,18 @@
 /**
  * Created by puhongru on 2017/4/13.
  */
+
+import {drawtable} from '../../../src/js/drawtable';
+console.log(drawtable);
 const socket = io('http://chess.slane.cn/');
 const rooms = document.getElementById('rooms');
 let checkedRoom;
 const nameInput = document.getElementById('login-name-input');
 const loginBtn = document.getElementById('login-submit');
+const game = document.getElementById('game');
+const loginPage = document.getElementById('login');
+
+game.style.display = 'none';
 
 // 得到当前所有房间的状态
 socket.on('roomstatus', function(data){
@@ -38,11 +45,10 @@ rooms.addEventListener('click',function(e){
         if(getPersonNum(e.target) >= 2){
             alert('房间已满，请重新选择！');
         }else{
-            checkedRoom = getRoomId(e.target);
-            console.log(checkedRoom);
             if(e.target.className.indexOf('chess-room-active') === -1){
                 e.target.className = e.target.className + ' chess-room-active';
             }
+            checkedRoom = getRoomId(e.target);
         }
     }
 });
@@ -69,20 +75,26 @@ loginBtn.addEventListener('click',() => {
         userName: name,
         roomId: checkedRoom - 1
     };
-    //console.log(data);
+    console.log(checkedRoom);
     socket.emit('joinroom', data);
+    game.style.display = 'block';
+    loginPage.style.display = 'none';
+    // 初始化canvas
+    let canvas = document.getElementById('chess-table');
+    let {width, height} = document.getElementById('table').getBoundingClientRect();
+    canvas.width = 2 * width;
+    canvas.height = 2 * height;
+    console.log(width, height);
+    Object.assign(canvas.style, {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%) scale(0.5)',
+    });
+    drawtable(canvas, width, height);
 });
 
 // 删除元素的className
 function delClassName(el, name){
     el.className = el.className.replace(name, '');
 }
-
-// 设置要加入的房间Id及用户名
-// var data = {
-//     userName: 'client1',
-//     roomId: 2
-// };
-//var data;
-
-//socket.emit('joinroom', data);
