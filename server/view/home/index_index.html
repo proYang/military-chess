@@ -26,7 +26,7 @@
 
   <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script>
   <script>
-  var socket = io('http://chess.slane.cn/');
+  var socket = io('http://localhost:8360');
   
   // 监听房间状态
   socket.on('roomstatus', function(data) {
@@ -42,15 +42,60 @@
   }
   socket.emit('joinroom', data)
 
+// 发起投降
+  var data = {
+    type: 'fail'
+  }
+  socket.emit('surrender', data)
+
+// 监听输赢
+  var data
+  socket.on('surrender', data)
+  if(data.type == 'win') {
+    // 用户赢了，离开房间操作
+  }
+  
+
+
+  // 发起求和
+  var data = {
+    type: 'leave'
+  }
+  socket.emit('negotiation', data)
+  // 
+  socket.emit('negotiation', {type:'confirm'}) 
+
+// 监听求和信息
+  socket.on('negotiation', function(data) {
+    console.log(data)
+    if(data.type == 'confirm') {
+          // 对方求和,确认是否求和
+          // var data = {
+          //   type: 'success'
+          // }
+          // var data = {
+          //   type: 'fail'
+          // }
+          socket.emit('negotiation', {type:'success'})
+      } else if(data.type == 'success'){
+        console.log('win')
+        // 求和成功
+      } else if(data.type == 'fail'){
+        console.log('lose')
+          // 求和失败
+      }
+  }) 
+  
 
   // 聊天相关
   // 发送消息给其他人
-  socket.emit('chat', '大家好0');
+  // socket.emit('chat', '大家好0');
   
   // 接收其他人消息
-  socket.on('chat', function (data) {
-    console.log(data);
-  });
+  // socket.on('chat', function (data) {
+  //   console.log(data);
+  // });
+
 
 </script>
 </body>

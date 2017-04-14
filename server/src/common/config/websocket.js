@@ -11,5 +11,7 @@ export default {
     joinroom: 'home/index/joinroom',
     chat: 'home/index/chat',
     chess: 'home/index/chess',
+    surrender: 'home/index/surrender',
+    negotiation: 'home/index/negotiation'
   }
 };

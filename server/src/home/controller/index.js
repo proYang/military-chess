@@ -5,17 +5,17 @@ import Base from './base.js';
 let socketId = 0;
 let users = {};
 let rooms = [
-    {roomId:0,users:[]},
-    {roomId:1,users:[]},
-    {roomId:2,users:[]},
-    {roomId:3,users:[]},
-    {roomId:4,users:[]},
-    {roomId:5,users:[]},
-    {roomId:6,users:[]},
-    {roomId:7,users:[]},
-    {roomId:8,users:[]},
-    {roomId:9,users:[]}
-  ];
+  { roomId: 0, users: [] },
+  { roomId: 1, users: [] },
+  { roomId: 2, users: [] },
+  { roomId: 3, users: [] },
+  { roomId: 4, users: [] },
+  { roomId: 5, users: [] },
+  { roomId: 6, users: [] },
+  { roomId: 7, users: [] },
+  { roomId: 8, users: [] },
+  { roomId: 9, users: [] }
+];
 let numUsers = 0;
 
 // function getRoomStatus() {
@@ -49,7 +49,7 @@ export default class extends Base {
     if (socket.userName) {
       // let users = rooms[roomId].users;
       let index = undefined;
-      rooms[roomId].users.forEach(function (item ,i) {
+      rooms[roomId].users.forEach(function (item, i) {
         if (item.userId == socket.socketId) {
           index = i
         }
@@ -80,7 +80,7 @@ export default class extends Base {
     // 加入房间
     socket.join(socket.roomId);
     console.log(socket.userName + ' join index:' + socket.roomId)
-    if(rooms[data.roomId].users.length < 2) {
+    if (rooms[data.roomId].users.length < 2) {
       // 设置为玩家
       rooms[data.roomId].users.push(user);
       ++numUsers;
@@ -92,7 +92,9 @@ export default class extends Base {
   }
 
   chatAction(self) {
+    // 聊天
     let socket = self.http.socket;
+    let roomId = socket.roomId;
     console.log(socket.userName + ' in ' + socket.roomId + self.http.data)
     socket.broadcast.to(socket.roomId).emit('chat', {
       userName: socket.userName,
@@ -101,12 +103,73 @@ export default class extends Base {
   }
 
   chessAction(self) {
+    // 棋局相关
+    // var data = {
+    //   type: 'move',
+    //   data: {},
+    //   msg: '对方已移动棋子'
+    // }
+    // var data = {
+    //   type: 'fail',
+    //   data: {},
+    //   msg: '对方选择投降'
+    // }
+    // var data = {
+    //   type: 'leave',
+    //   data: {},
+    //   msg: '对方选择求和'
+    // }
     let socket = self.http.socket;
     console.log(socket.userName + ' in ' + socket.roomId + self.http.data)
     socket.broadcast.to(socket.roomId).emit('chess', {
       userName: socket.userName,
       message: self.http.data
     });
+
+
+  }
+
+  surrenderAction(self) {
+    // var data = {
+    //   type: 'fail',
+    //   data: {},
+    //   msg: '对方选择投降'
+    // }
+    // 求和
+    let socket = self.http.socket
+    let roomId = socket.roomId;
+    let data = self.http.data
+    if (data.type == 'fail') {
+      // 选择投降
+      console.log(socket.userName + 'surrender ' + socket.roomId)
+      // 通知房间其他用户赢了
+      socket.broadcast.to(socket.roomId).emit('status', { type: 'win' });
+      // 清人
+      rooms[roomId].users = []
+    }
+  }
+
+  negotiationAction(self) {
+    let socket = self.http.socket
+    let roomId = socket.roomId;
+    let data = self.http.data
+    if (data.type == 'leave') {
+      // 请求求和
+      console.log(socket.userName + 'negotiationAction ' + socket.roomId)
+      // 通知房间其他用户求和
+      socket.broadcast.to(socket.roomId).emit('negotiation', { type: 'confirm' });
+      
+    } else if(data.type == 'success') {
+      // 通知房间所有用户求和成功
+      console.log(socket.userName + 'negotiationActionSuccess ' + socket.roomId)
+      socket.broadcast.in(socket.roomId).emit('negotiation', { type: 'success' });
+      // 清人
+      rooms[roomId].users = []
+    } else if(data.type == 'fail') {
+      // 通知房间所有用户求和失败
+      console.log(socket.userName + 'negotiationActionFail ' + socket.roomId)
+      socket.broadcast.in(socket.roomId).emit('negotiation', { type: 'fail' });
+    }
   }
   // typingAction(self) {
   //   let socket = self.http.socket;
