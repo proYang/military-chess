@@ -174,4 +174,10 @@ $btnNegoBackgroundColor: #B8C7C9;
     width: 80%;
     height: 50%;
     margin: 10% auto;
+    overflow: hidden;
+}
+#mask-content p{
+    display: block;
+    margin: 50px auto;
+    text-align: center;
 }
