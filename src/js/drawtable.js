@@ -1,5 +1,6 @@
 import {chessPosition} from './global';
-import drag from '../../public/lib/script/drag.js';
+import {setDrop} from '../../public/lib/script/drag';
+console.log(setDrop);
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
@@ -104,6 +105,7 @@ function drawtable(canvas, width, height) {
     drawMountainWrapper(ctx, 25, 32, '山界', '#000', 100, xStep, chessPosition);
     drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);  
     drawHiddenPlaceholder(canvas, 2, 1, chessPosition, xStep);
+    setDrop();
 }
 
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
@@ -113,7 +115,6 @@ function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, x
         placeholder.setAttribute('class', 'hover');
         placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
         documentFragment.appendChild(placeholder);
-        console.log(chessPosition[i][0]*xStep -  xStep*chessWidth/2);
     }
     // console.log(documentFragment);
     document.getElementById('table').appendChild(documentFragment);
@@ -241,3 +242,5 @@ function Point2D(x, y) {
     this.x = x;
     this.y = y;
 }
+
+setDrop();
