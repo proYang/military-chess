@@ -109,15 +109,9 @@ function drawtable(canvas, width, height) {
 function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
     let documentFragment = new DocumentFragment(), placeholder;
     for (let i = 0; i < chessPosition.length; i++) {
-        let placeholder = document.createElement('div');
-        // let [x, y] = getCanvasPoint(chessPosition[i][0], chessPosition[i][1])      
+        let placeholder = document.createElement('div');     
         placeholder.setAttribute('class', 'hover');
-        // placeholder.setAttribute('style', 'position: absolute; left: ' + chessPosition[i][0]*xStep -  xStep*chessWidth/2+ 'px; top: ' + chessPosition[i][1]*xStep - xStep*chessHeight/2+ 'px;')
-        placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')
-        // placeholder.setAttribute('position', 'absolute');  
-        // let [x, y] = getCanvasPoint(chessPosition[i][0], chessPosition[i][1])      
-        // placeholder.setAttribute('top', x*xStep + 'px');        
-        // placeholder.setAttribute('left', y*xStep + 'px');        
+        placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')       
         documentFragment.appendChild(placeholder);
         console.log(chessPosition[i][0]*xStep -  xStep*chessWidth/2);
     }

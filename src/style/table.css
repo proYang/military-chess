@@ -90,8 +90,6 @@
 
 .chesses {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   width: 92%;
   height: 10%;
   background-color: #B8C7C9;
