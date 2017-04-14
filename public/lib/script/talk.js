@@ -8,13 +8,13 @@ let talkContent = document.getElementById('talkContent'),
 	socket = io('http://chess.slane.cn/');
 const JOINROOM = 'joinroom',      // 加入房间的事件
 	CHAT = 'chat';              // 聊天的事件
-function createContentNode (val) {
+function createContentNode (nick,val) {
 	let newNode = document.createElement('div'),
 		nodeNick = document.createElement('span'),
 		nodeContent = document.createElement('span');
 	newNode.className = 'talk-text';
 	nodeNick.className = 'nick';
-	nodeNick.innerHTML ='nick';
+	nodeNick.innerHTML =nick;
 	nodeContent.innerHTML = ' : &nbsp;'+ val ;
 	newNode.appendChild(nodeNick);
 	newNode.appendChild(nodeContent);
@@ -30,7 +30,8 @@ function btnHanfler() {
 		// alert('please input content');
 		return;
 	}
-	createContentNode(val);
+	let nick = window.localStorage.getItem('nick');
+	createContentNode(nick,val);
 	socket.emit(CHAT, val);
 	realSendContent.innerHTML = '';
 }
@@ -48,7 +49,8 @@ function getNickAndID(){
 }
 function updateList(res) {
 	let msg = res.message;
-	createContentNode(msg);
+	let nick = window.localStorage.getItem('nick');
+	createContentNode(nick,msg);
 }
 function sendDateByEnter(ev) {
 		console.log(111);
@@ -60,7 +62,6 @@ function sendDateByEnter(ev) {
 }
 function toggleDefaultContent() {
 	let  ifShow = defalutSelectContent.style.display === 'block';
-	console.log(ifShow);
 	defalutSelectContent.style.display = ifShow ? 'none' : 'block';
 	showDefaultContent.className = !ifShow ? 'hide-default_content':'show-default_content' ;
 }
@@ -68,7 +69,8 @@ function toggleDefaultContent() {
 function defaultContent(ev) {
 	if(ev.target.nodeName !== 'LI') return;
 	let val = ev.target.innerHTML;
-	createContentNode(val);
+	let nick = window.localStorage.getItem('nick');
+	createContentNode(nick,val);
 	socket.emit(CHAT, val);
 }	
 
