@@ -90,7 +90,7 @@ function listen(ev) {
 	showDefaultContent.addEventListener('click',toggleDefaultContent,false);
 	let data = getNickAndID();  // 得到这个房间的用户和ID
 	socket.emit(JOINROOM, data); // 向房间里的其他人物发送信息
-	//socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
+	socket.on(CHAT, updateList); // 得到别人的发送来的消息，更新DOM
 	realSendContent.addEventListener('keydown',sendDateByEnter,false);
 	realSendContent.addEventListener('focus',focusInputContent,false);
 
