@@ -1,5 +1,5 @@
 import {chessPosition} from './global';
-
+import drag from '../../public/lib/script/drag.js';
 window.onload = function() {
     let canvas = document.getElementById('chess-table');
     let {width, height} = document.getElementById('table').getBoundingClientRect();
