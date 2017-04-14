@@ -46,6 +46,7 @@ window.onload = function() {
     });
 
     socket.on('negotiation', function(data){
+        console.log(data);
         if (game) {
             if (sendNegotiationFlag) {
                 if (data.type === 'success') {
@@ -68,7 +69,7 @@ window.onload = function() {
                     document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "求和失败";
                 }
             } else {
-                if (data.type === 'comfirm') {
+                if (data.type === 'confirm') {
                     let mask = document.getElementById('mask');
                     if (mask.className.indexOf('hidden') === -1) {
                         mask.className += 'hidden';
@@ -83,8 +84,9 @@ window.onload = function() {
     });
 
     socket.on('surrender', function(data){
+        console.log(data);
         if (game) {
-            if (date.type === 'win') {
+            if (data.type === 'win') {
                 // 处理接收投降
                 receiveSurrenderFlag = true;
                 let mask = document.getElementById('mask');
@@ -114,16 +116,14 @@ window.onload = function() {
                 }
                 // game = false;
                 // document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "等待对方接收平局请求";
-            }
-            if (sendSurrenderFlag) {
+            } else if (sendSurrenderFlag) {
                 let data = {
                     type: 'fail'
                 }
                 socket.emit('surrender', data);
                 document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "您已失败";                
                 game = false;
-            }
-            if (receiveNegotiationFlag) {
+            } else if (receiveNegotiationFlag) {
                 // let mask = document.getElementById('mask');
                 // if (mask.className.indexOf('hidden') === -1) {
                 //     mask.className += 'hidden';
@@ -136,11 +136,17 @@ window.onload = function() {
                 socket.emit('negotiation', data);
                 game = false;
                 document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "双方平局";
-            }
-            if (receiveSurrenderFlag) {
+            } else if (receiveSurrenderFlag) {
                 // socket.emit('surrender', data);   
                 game = false;  
                 document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "您已胜利";                     
+            } else {
+                let mask = document.getElementById('mask');
+                if (mask.className.indexOf('hidden') === -1) {
+                    mask.className += 'hidden';
+                } else {
+                    mask.className = mask.className.replace('hidden', '');
+                }
             }
         }
     });
@@ -156,8 +162,7 @@ window.onload = function() {
                 } else {
                     mask.className = mask.className.replace('hidden', '');
                 }
-            }
-            if (sendSurrenderFlag) {
+            } else if (sendSurrenderFlag) {
                 sendSurrenderFlag = false;
                 let mask = document.getElementById('mask');
                 if (mask.className.indexOf('hidden') === -1) {
@@ -165,23 +170,37 @@ window.onload = function() {
                 } else {
                     mask.className = mask.className.replace('hidden', '');
                 }
-            }
-            if (receiveNegotiationFlag) {
+            } else if (receiveNegotiationFlag) {
                 let data = {
                     type: 'fail'
                 }
                 socket.emit('negotiation', data);
                 receiveNegotiationFlag = false;
-                document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "双方平局";                
-            }
-            if (receiveSurrenderFlag) {
+                console.log('receiveNegotiationFlag no');
+                let mask = document.getElementById('mask');
+                if (mask.className.indexOf('hidden') === -1) {
+                    console.log('get int receNogot false');
+                    mask.className = mask.className + 'hidden';
+                } else {
+                    mask.className = mask.className.replace('hidden', '');
+                }
+                // document.getElementById('mask-content').getElementsByTagName('p')[0].innerText = "双方平局";                
+            } else if (receiveSurrenderFlag) {
                 receiveSurrenderFlag = false;
                 game = false;
+                let mask = document.getElementById('mask');
                 if (mask.className.indexOf('hidden') === -1) {
                     mask.className += 'hidden';
                 } else {
                     mask.className = mask.className.replace('hidden', '');
                 }        
+            } else {
+                let mask = document.getElementById('mask');
+                if (mask.className.indexOf('hidden') === -1) {
+                    mask.className += 'hidden';
+                } else {
+                    mask.className = mask.className.replace('hidden', '');
+                }  
             }
         } 
     });
