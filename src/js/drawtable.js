@@ -102,7 +102,27 @@ function drawtable(canvas, width, height) {
         drawStationWrapper(ctx, '#424D37', '#538ED5', 6,  strongholds[i], '大本营', xStep, chessPosition);   
     }
     drawMountainWrapper(ctx, 25, 32, '山界', '#000', 100, xStep, chessPosition);
-    drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);    
+    drawMountainWrapper(ctx, 27, 34, '山界', '#000', 100, xStep, chessPosition);  
+    drawHiddenPlaceholder(canvas, 2, 1, chessPosition, xStep);
+}
+
+function drawHiddenPlaceholder(canvas, chessWidth, chessHeight, chessPosition, xStep) {
+    let documentFragment = new DocumentFragment(), placeholder;
+    for (let i = 0; i < chessPosition.length; i++) {
+        let placeholder = document.createElement('div');
+        // let [x, y] = getCanvasPoint(chessPosition[i][0], chessPosition[i][1])      
+        placeholder.setAttribute('class', 'hover');
+        // placeholder.setAttribute('style', 'position: absolute; left: ' + chessPosition[i][0]*xStep -  xStep*chessWidth/2+ 'px; top: ' + chessPosition[i][1]*xStep - xStep*chessHeight/2+ 'px;')
+        placeholder.setAttribute('style', 'position: absolute; left: ' + (chessPosition[i][0] -  chessWidth/2)*xStep + 'px; top: ' + (chessPosition[i][1] - chessHeight)*xStep + 'px;')
+        // placeholder.setAttribute('position', 'absolute');  
+        // let [x, y] = getCanvasPoint(chessPosition[i][0], chessPosition[i][1])      
+        // placeholder.setAttribute('top', x*xStep + 'px');        
+        // placeholder.setAttribute('left', y*xStep + 'px');        
+        documentFragment.appendChild(placeholder);
+        console.log(chessPosition[i][0]*xStep -  xStep*chessWidth/2);
+    }
+    // console.log(documentFragment);
+    document.getElementById('table').appendChild(documentFragment);
 }
 
 function drawMountainWrapper(ctx, index1, index2, text, color, fontSize, xStep, chessPosition) {
@@ -146,7 +166,7 @@ function drawSubway(ctx, color, xStep, lineWidth) {
 }
 
 function drawStationWrapper(ctx, bdColor, bgColor, lineWidth, index, text, xStep, chessPosition) {
-    drawStation(ctx, bdColor, bdColor, chessPosition[index][0]*xStep, chessPosition[index][1]*xStep, 2*xStep*text.length/2, xStep*text.length/2, text, 6);   
+    drawStation(ctx, bdColor, bgColor, chessPosition[index][0]*xStep, chessPosition[index][1]*xStep, 2*xStep*text.length/2, xStep*text.length/2, text, 6);   
 }
 
 function drawStation(ctx, bdColor, bgColor, x, y, width, height, text, lineWidth) {
