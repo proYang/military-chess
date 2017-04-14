@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="./src/style/normalize.css">
     <link rel="stylesheet" type="text/css" href="./src/style/table.css">
+    <link rel="stylesheet" href="./src/style/chesspiece.css">
+    <link rel="stylesheet" href="./src/style/drag.css">
 </head>
 <body>
     <div id="wrap">
@@ -21,16 +23,24 @@
                     <div><div class="btn">求 和</div></div>
                     <div><div class="btn">投 降</div></div>
                 </div>
-                <div class="chesses"></div>
+                <div class="chesses">
+                    <div class="chesspiece chesspiece-blue chesspiece-check" draggable="true">军旗</div>
+                </div>
                 <div class="chesses"></div>
                 <div id="dialog"></div>
             </aside>
             <div id="table">
                 <canvas id="chess-table"></canvas>
+                <div class="hover" style="position: absolute;top: 3.5%;left: 5%;"></div>
+                <div class="hover" style="position: absolute;top: 3.5%;left: 25%;"></div>
+                <div class="hover" style="position: absolute;top: 3.5%;left: 45%;"></div>
+                <div class="hover" style="position: absolute;top: 3.5%;left: 65%;"></div>
+                <div class="hover" style="position: absolute;top: 3.5%;left: 85%;"></div>
             </div>
         </div>
     </div>
      <script src="http://s4.qhimg.com/static/535dde855bc726e2/socket.io-1.2.0.js"></script> 
     <script src="./public/dist/index.js"></script>
+
 </body>
 </html>

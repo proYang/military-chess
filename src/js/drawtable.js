@@ -22,7 +22,7 @@ window.onload = function() {
         canvas.width = 2 * width;
         canvas.height = 2 * height;
         drawtable(canvas, width, height);
-    })
+    });
     startTiming();
 }
 
