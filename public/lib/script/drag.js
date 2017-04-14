@@ -1,9 +1,21 @@
 let chessEls = document.getElementsByClassName('chesspiece');
 let dragEl;
-var hovers = document.getElementsByClassName('hover');
+let hovers = document.getElementsByClassName('hover');
+
+
+function setDrag(chessEl) {
+    chessEl.ondragstart = function(ev){
+        ev.dataTransfer.effectAllowed = 'move';
+        dragEl = ev.target;
+    };
+    chessEl.ondragend = function (ev){
+        dragEl = null;
+        return false;
+    }
+}
+
 for(var hover of hovers) {
     hover.ondragover = function (ev){
-        console.log(3);
         ev.preventDefault();
         return true;
     };
@@ -11,6 +23,8 @@ for(var hover of hovers) {
         console.log(dragEl);
         let chessItem = document.createElement('div');
         chessItem.className = 'chesspiece' + ' ' + 'chesspiece-blue' + ' ' + 'chesspiece-table';
+        chessItem.setAttribute('draggable','true');
+        setDrag(chessItem);
         if(dragEl){
             chessItem.innerHTML = dragEl.innerHTML;
             dragEl.parentNode.removeChild(dragEl);
@@ -22,13 +36,5 @@ for(var hover of hovers) {
 
 
 for (let chessEl of chessEls) {
-
-    chessEl.ondragstart = function(ev){
-        ev.dataTransfer.effectAllowed = 'move';
-        dragEl = ev.target;
-    };
-    chessEl.ondragend = function (ev){
-        dragEl = null;
-        return false;
-    }
+    setDrag(chessEl);
 }
