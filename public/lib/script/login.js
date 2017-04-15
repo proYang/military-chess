@@ -77,6 +77,8 @@ loginBtn.addEventListener('click',(e) => {
     e.stopPropagation();
     e.preventDefault();
     let name = getUserName(nameInput);
+    window.localStorage.setItem('nick', name)
+    window.localStorage.setItem('user_id', checkedRoom - 1)
     let data = {
         userName: name,
         roomId: checkedRoom - 1
