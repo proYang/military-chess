@@ -33,6 +33,7 @@ function btnHanfler() {
 	let nick = window.localStorage.getItem('nick');
 	createContentNode(nick,val);
 	socket.emit(CHAT, val);
+	focusInputContent();
 	realSendContent.innerHTML = '';
 }
 
@@ -53,7 +54,6 @@ function updateList(res) {
 	createContentNode(nick,msg);
 }
 function sendDateByEnter(ev) {
-		console.log(111);
 	if(ev.keyCode === 13) {
 		btnHanfler();
 		realSendContent.innerHTML = '';
@@ -78,15 +78,14 @@ function defaultContent(ev) {
 function selectEmoji (ev) {
 	if(ev.target.nodeName !== 'IMG') return;
 	let emojiSrc = ev.target.src;
-	// sendInput.value+=`<img src="${emojiSrc}">`;
 	realSendContent.innerHTML+=`<img src="${emojiSrc}">`;
 }
 function focusInputContent() {
+	console.log(456);
 	defalutSelectContent.style.display = 'none';
 	showDefaultContent.className = 'hide-default_content';
 }
 function listen(ev) {
-	console.log(666);
 	saveBtn.addEventListener('click',btnHanfler,false);// 监听按钮点击
 	faceEmoji.addEventListener('click',selectEmoji,false);// 监听点击表情的事件
 	defalutSelectContent.addEventListener('click',defaultContent,false);// 默认选中文字的事件
