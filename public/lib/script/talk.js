@@ -48,8 +48,8 @@ function getNickAndID(){
 	}
 }
 function updateList(res) {
-	let msg = res.message;
-	let nick = window.localStorage.getItem('nick');
+	let msg = res.message,
+		nick = res.userName;
 	createContentNode(nick,msg);
 }
 function sendDateByEnter(ev) {
